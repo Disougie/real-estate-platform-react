@@ -1,0 +1,56 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+export default function EditEmailPage() {
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Handle update email logic here
+    navigate('/account-settings')
+  }
+
+  return (
+    <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
+      <img src="../assets/LogoPic.png" alt="logo" className="w-48 h-48 mb-12" />
+      
+      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
+        {/* New Email Field */}
+        <div className="flex items-center gap-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="flex-1 bg-gray-200 text-gray-600 px-4 py-3 text-right focus:outline-none focus:ring-2 focus:ring-accent"
+            placeholder="ادخل البريد الالكتروني الجديد"
+            required
+          />
+          <label className="text-white text-xl font-medium min-w-[160px] text-right">
+            البريد الالكتروني الجديد
+          </label>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-center pt-4">
+          <button
+            type="submit"
+            className="bg-gray-200 text-primary font-bold px-16 py-3 hover:bg-gray-300 transition-colors"
+          >
+            تأكيد
+          </button>
+        </div>
+
+        {/* Back Link */}
+        <div className="flex justify-center pt-2">
+          <Link 
+            to="/account-settings" 
+            className="text-white hover:text-accent transition-colors"
+          >
+            العودة لإعدادات الحساب
+          </Link>
+        </div>
+      </form>
+    </div>
+  )
+}
