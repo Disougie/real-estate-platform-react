@@ -6,9 +6,9 @@ import { apis } from '../api'
 // Section Header Component
 function SectionHeader({ titleAr, titleEn }) {
   return (
-    <div className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center rounded-t-lg">
-      <span className="text-sm font-medium tracking-wide">{titleEn}</span>
+    <div className="bg-primary text-white px-4 py-3 flex justify-between items-center rounded-t-lg">
       <span className="text-lg font-bold">{titleAr}</span>
+      <span className="text-sm font-medium tracking-wide">{titleEn}</span>
     </div>
   )
 }
@@ -22,11 +22,11 @@ function FieldRow({ fields }) {
           key={index}
           className="flex-1 min-w-[200px] p-3 flex items-center justify-end gap-2"
         >
-          <span className="border-b border-gray-300 flex-1 min-w-[80px]">
-            {field.value || ''}
-          </span>
           <span className="text-gray-700 font-medium whitespace-nowrap">
             {field.label}
+          </span>
+          <span className="border-b border-gray-300 flex-1 min-w-[80px] text-center">
+            {field.value || ''}
           </span>
         </div>
       ))}
@@ -44,7 +44,7 @@ export default function ContractDetailsPage() {
     let alive = true
     setLoading(true)
     apis.contracts
-      .getInitialContract({ id: Number(id) })
+      .getInitialContract(Number(id))
       .then((res) => {
         if (!alive) return
         setContract(res.data)
@@ -71,10 +71,10 @@ export default function ContractDetailsPage() {
     <div className="min-h-screen">
       <Header activeNav="العقود المبدئية" />
       
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-4 py-8" >
         {loading && (
           <div className="rounded-xl bg-white p-8 text-center text-gray-600 shadow">
-            جاري تحميل تفاصيل العقد...
+            جاري تحميل تفاصيل الحجز...
           </div>
         )}
 
@@ -85,15 +85,15 @@ export default function ContractDetailsPage() {
         )}
 
         {!loading && contract && (
-        <div className="bg-gray-50 rounded-xl overflow-hidden shadow-xl">
+        <div className="bg-gray-50 rounded-xl overflow-hidden shadow-2xl">
           {/* Contract Data Section */}
           <div className="mb-1">
-            <SectionHeader titleAr="بيانات العقد" titleEn="CONTRACT DATA" />
+            <SectionHeader titleAr="بيانات الحجز" titleEn="RESERVATION DATA" />
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'حالة العقد:', value: contract.status || '—' },
-                  { label: 'رقم سجل العقد:', value: String(contract.id ?? '—') },
+                  { label: 'رقم الحجز:', value: String(contract.id ?? '—') },
+                  { label: 'حالة الحجز:', value: contract.status || '—' },
                 ]}
               />
               <FieldRow
@@ -111,8 +111,8 @@ export default function ContractDetailsPage() {
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'البريد الالكتروني:', value: contract.owner_data?.email },
                   { label: 'الاسم:', value: contract.owner_data?.name },
+                  { label: 'البريد الالكتروني:', value: contract.owner_data?.email },
                 ]}
               />
               <FieldRow
@@ -130,8 +130,8 @@ export default function ContractDetailsPage() {
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'البريد الالكتروني:', value: contract.seeker_data?.email },
                   { label: 'الاسم:', value: contract.seeker_data?.name },
+                  { label: 'البريد الالكتروني:', value: contract.seeker_data?.email },
                 ]}
               />
               <FieldRow
@@ -149,8 +149,8 @@ export default function ContractDetailsPage() {
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'الغرض من إستخدام العقار:', value: contract.property_data?.purpose },
                   { label: 'الموقع:', value: contract.property_data?.location },
+                  { label: 'الغرض من إستخدام العقار:', value: contract.property_data?.purpose },
                 ]}
               />
               <FieldRow
@@ -168,8 +168,8 @@ export default function ContractDetailsPage() {
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'قيمة الإيجار:', value: contract.financial_data?.rent_price },
-                  { label: 'مدة الإيجار:', value: contract.financial_data?.rent_duration },
+                  { label: 'قيمة الإيجار:', value: contract.financial_data?.rent_price || '—' },
+                  { label: 'مدة الإيجار:', value: contract.financial_data?.rent_duration || '—' },
                 ]}
               />
               <FieldRow

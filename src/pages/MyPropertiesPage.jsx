@@ -22,7 +22,7 @@ function PropertyCard({ property }) {
             </h3>
             <p className="text-gray-600 text-xs mt-1">{property.location}</p>
           </div>
-          <button 
+          {/* <button 
             className="text-gray-500 hover:text-primary mt-1"
             onClick={(e) => {
               e.preventDefault()
@@ -30,7 +30,7 @@ function PropertyCard({ property }) {
             }}
           >
             <MoreVertical size={18} />
-          </button>
+          </button> */}
         </div>
       </div>
     </Link>
@@ -66,7 +66,7 @@ export default function MyPropertiesPage() {
       location: `${p.location?.city || ''}${p.location?.area ? `, ${p.location.area}` : ''}`,
       image:
         (p.images && p.images[0]?.imageUrl) ||
-        'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80',
+        '../assets/property default image.PNG',
     }))
   }, [raw])
 

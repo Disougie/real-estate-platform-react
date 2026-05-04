@@ -2,13 +2,21 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import PropertyTabs from '../components/PropertyTabs'
 
-const regions = ['اختر المنطقة', 'الدناقلة', 'الصيافي', 'المزاد', 'الصافية', 'الشعبية']
+const areas = ['اختر المنطقة', 'الدناقلة', 'الصيافي', 'المزاد', 'الصافية', 'الشعبية']
 const cities = ['اختر المدينة', 'الخرطوم', 'بحري', 'امدرمان', 'الجيلي', 'الكلاكلة']
 
 export default function Sidebar({ filters, setFilters, onSearch }) {
-  const [activeTab, setActiveTab] = useState('buy')
-  const [regionOpen, setRegionOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState()
+  const [areaOpen, setareaOpen] = useState(false)
   const [cityOpen, setCityOpen] = useState(false)
+
+  const handleTypeChange = (type) => {
+    setActiveTab(type);
+    setFilters(prev => ({
+      ...prev,
+      type: type
+    }));
+  }
 
   const handleIncrement = (field, max = 10) => {
     setFilters(prev => ({
@@ -40,16 +48,19 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
 
   return (
     <aside className="bg-gray-100 p-4 w-full lg:w-80 border-r border-gray-300">
-      <PropertyTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      <PropertyTabs activeTab={activeTab} handleTypeChange={handleTypeChange} />
       {/* Header */}
       <div className="flex items-center justify-between my-4">
-        <button className="px-4 py-2 border border-gray-400 rounded text-gray-700 hover:bg-gray-200 transition-colors">
+        <button 
+          className="px-4 py-2 border border-gray-400 rounded text-gray-700 hover:bg-gray-200 transition-colors"
+          onClick={setFilters}
+        >
           إعادة ضبط
         </button>
         <span className="text-gray-700 font-medium">خيارات البحث</span>
       </div>
 
-      {/* Region & City */}
+      {/* area & City */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* City Dropdown */}
         <div>
@@ -83,31 +94,31 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
           </div>
         </div>
 
-        {/* Region Dropdown */}
+        {/* area Dropdown */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1 text-right">المنطقة</label>
           <div className="relative">
             <button
-              onClick={() => setRegionOpen(!regionOpen)}
+              onClick={() => setareaOpen(!areaOpen)}
               className="w-full px-3 py-2 border border-accent rounded bg-white text-right flex items-center justify-between"
             >
               <ChevronRight size={16} className="text-gray-500" />
-              <span>{filters.region || 'اختر المنطقة'}</span>
+              <span>{filters.area || 'اختر المنطقة'}</span>
             </button>
-            {regionOpen && (
+            {areaOpen && (
               <div className="absolute top-full right-0 left-0 bg-white border border-gray-300 rounded mt-1 z-10 shadow-lg">
-                {regions.map((region, index) => (
+                {areas.map((area, index) => (
                   <button
                     key={index}
                     onClick={() => {
-                      setFilters(prev => ({ ...prev, region }))
-                      setRegionOpen(false)
+                      setFilters(prev => ({ ...prev, area }))
+                      setareaOpen(false)
                     }}
                     className={`w-full px-3 py-2 text-right hover:bg-accent hover:text-white transition-colors ${
-                      filters.region === region ? 'bg-accent text-white' : ''
+                      filters.area === area ? 'bg-accent text-white' : ''
                     }`}
                   >
-                    {region}
+                    {area}
                   </button>
                 ))}
               </div>
@@ -122,14 +133,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handleDecrement('roomsMax')}
+              onClick={() => handleDecrement('maxRooms')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-8 text-center">{filters.roomsMax}</span>
+            <span className="w-8 text-center">{filters.maxRooms}</span>
             <button 
-              onClick={() => handleIncrement('roomsMax')}
+              onClick={() => handleIncrement('maxRooms')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />
@@ -138,14 +149,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
           <span className="text-gray-600">إلى</span>
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handleDecrement('roomsMin')}
+              onClick={() => handleDecrement('minRooms')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-8 text-center">{filters.roomsMin}</span>
+            <span className="w-8 text-center">{filters.minRooms}</span>
             <button 
-              onClick={() => handleIncrement('roomsMin')}
+              onClick={() => handleIncrement('minRooms')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />
@@ -160,14 +171,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handleDecrement('bathroomsMax')}
+              onClick={() => handleDecrement('maxBaths')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-8 text-center">{filters.bathroomsMax}</span>
+            <span className="w-8 text-center">{filters.maxBaths}</span>
             <button 
-              onClick={() => handleIncrement('bathroomsMax')}
+              onClick={() => handleIncrement('maxBaths')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />
@@ -176,14 +187,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
           <span className="text-gray-600">إلى</span>
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handleDecrement('bathroomsMin')}
+              onClick={() => handleDecrement('minBaths')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-8 text-center">{filters.bathroomsMin}</span>
+            <span className="w-8 text-center">{filters.minBaths}</span>
             <button 
-              onClick={() => handleIncrement('bathroomsMin')}
+              onClick={() => handleIncrement('minBaths')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />
@@ -198,14 +209,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handlePriceDecrement('priceMax')}
+              onClick={() => handlePriceDecrement('maxPrice')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-16 text-center text-sm">{filters.priceMax.toLocaleString()}</span>
+            <span className="w-16 text-center text-sm">{filters.maxPrice}</span>
             <button 
-              onClick={() => handlePriceIncrement('priceMax')}
+              onClick={() => handlePriceIncrement('maxPrice')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />
@@ -214,14 +225,14 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
           <span className="text-gray-600">إلى</span>
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handlePriceDecrement('priceMin')}
+              onClick={() => handlePriceDecrement('minPrice')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-16 text-center text-sm">{filters.priceMin.toLocaleString()}</span>
+            <span className="w-16 text-center text-sm">{filters.minPrice}</span>
             <button 
-              onClick={() => handlePriceIncrement('priceMin')}
+              onClick={() => handlePriceIncrement('minPrice')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />

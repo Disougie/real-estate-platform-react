@@ -1,7 +1,46 @@
 import { MoreVertical } from 'lucide-react'
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import { apis } from '../api'
 
 export default function PropertyCard({ property }) {
+
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setShowMenu(false);
+        }
+    };
+
+    // إضافة المستمع (Listener) عند فتح القائمة
+    if (showMenu) {
+        document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, [showMenu]);
+  
+  const viewAddingToFavorites = (e) => {
+    e.preventDefault();
+    setShowMenu(!showMenu)
+  }
+
+  const addToFavourit = async (e) => {
+    e.preventDefault()
+    const res = await apis.savedProperties.saveProperty({
+      property_id: String(property.id),
+    })
+
+    if(res.status == 201)
+      alert("تمت اضافة العقار الى المفضلة")
+  }
+
+
   return (
     <Link 
       to={`/property/${property.id}`}
@@ -17,7 +56,7 @@ export default function PropertyCard({ property }) {
       </div>
 
       {/* Content */}
-      <div className="p-3 flex items-start gap-2">
+      <div className="p-3 flex items-start gap-2 relative">
         
         <div className="flex-1 text-right">
           <h3 className="font-medium text-gray-800 text-sm leading-relaxed">
@@ -27,10 +66,19 @@ export default function PropertyCard({ property }) {
         </div>
         <button 
           className="text-gray-500 hover:text-gray-700 mt-1"
-          onClick={(e) => e.preventDefault()}
+          onClick={(e) => viewAddingToFavorites(e)}
         >
           <MoreVertical size={18} />
         </button>
+        {showMenu && (
+          <div 
+            ref={menuRef}
+            className='px-5 py-2 bg-white text-primary absolute shadow-sm hover:shadow-md left-0'
+            onClick={addToFavourit}
+          >
+            اضافة الى المفضلة
+          </div>
+        )}
       </div>
     </Link>
   )

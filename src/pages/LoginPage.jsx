@@ -11,9 +11,9 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    
     const res = await apis.login.login({
-      loginRequest: { email: formData.email, password: formData.password },
+      email: formData.email, password: formData.password,
     })
 
     const authHeader =
@@ -23,7 +23,11 @@ export default function LoginPage() {
 
     if (typeof authHeader === 'string' && authHeader.toLowerCase().startsWith('bearer ')) {
       localStorage.setItem('token', authHeader.slice(7).trim())
+      localStorage.setItem('name', res.data.name);
+      localStorage.setItem('email', formData.email);
+      localStorage.setItem('id', res.data.id);
     }
+
 
     const roleRaw = res.data?.role || ''
     const role = String(roleRaw).toLowerCase()
@@ -50,14 +54,14 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* Email Field */}
         <div className="flex items-center gap-4">
-          <label className="text-white text-xl font-medium min-w-[140px] text-right">
+          <label className="text-white text-xl font-medium min-w-[140px] text-center">
             البريد الاكتروني
           </label>
           <input
             type="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="flex-1 bg-gray-200 text-gray-800 px-4 py-3 text-right focus:outline-none focus:ring-2 focus:ring-accent"
+            className="flex-1 bg-gray-200 text-gray-800 px-4 py-3 text-center focus:outline-none focus:ring-2 focus:ring-accent"
             required
           />
         </div>

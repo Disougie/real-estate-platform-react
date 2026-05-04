@@ -5,7 +5,7 @@ import SettingsPanel from './SettingsPanel'
 
 const navItems = [
   { label: 'بحث الخرائط', path: '/map-search' },
-  { label: 'العقود المبدئية', path: '/contracts' },
+  { label: 'الحجوزات المبدئية', path: '/contracts' },
   { label: 'الاشعارات', path: '/notifications' },
   { label: 'المدونة', path: '/blogs' },
 ]

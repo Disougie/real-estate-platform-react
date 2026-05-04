@@ -23,60 +23,60 @@ import LoginResponse from '../model/LoginResponse';
 */
 export default class LoginControllerApi {
 
-    /**
-    * Constructs a new LoginControllerApi. 
-    * @alias module:api/LoginControllerApi
-    * @class
-    * @param {module:ApiClient} [apiClient] Optional API client implementation to use,
-    * default to {@link module:ApiClient#instance} if unspecified.
-    */
-    constructor(apiClient) {
-        this.apiClient = apiClient || ApiClient.instance;
+  /**
+  * Constructs a new LoginControllerApi. 
+  * @alias module:api/LoginControllerApi
+  * @class
+  * @param {module:ApiClient} [apiClient] Optional API client implementation to use,
+  * default to {@link module:ApiClient#instance} if unspecified.
+  */
+  constructor(apiClient) {
+    this.apiClient = apiClient || ApiClient.instance;
+  }
+
+
+
+  /**
+   * @param {module:model/LoginRequest} loginRequest 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/LoginResponse} and HTTP response
+   */
+  loginWithHttpInfo(loginRequest) {
+    let postBody = loginRequest;
+    // verify the required parameter 'loginRequest' is set
+    if (loginRequest === undefined || loginRequest === null) {
+      throw new Error("Missing the required parameter 'loginRequest' when calling login");
     }
 
+    let pathParams = {
+    };
+    let queryParams = {
+    };
+    let headerParams = {
+    };
+    let formParams = {
+    };
 
+    let authNames = ['BearerAuth'];
+    let contentTypes = ['application/json'];
+    let accepts = ['*/*'];
+    let returnType = LoginResponse;
+    return this.apiClient.callApi(
+      '/api/v1/login', 'POST',
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType, null
+    );
+  }
 
-    /**
-     * @param {module:model/LoginRequest} loginRequest 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/LoginResponse} and HTTP response
-     */
-    loginWithHttpInfo(loginRequest) {
-      let postBody = loginRequest;
-      // verify the required parameter 'loginRequest' is set
-      if (loginRequest === undefined || loginRequest === null) {
-        throw new Error("Missing the required parameter 'loginRequest' when calling login");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = ['BearerAuth'];
-      let contentTypes = ['application/json'];
-      let accepts = ['*/*'];
-      let returnType = LoginResponse;
-      return this.apiClient.callApi(
-        '/api/v1/login', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
-      );
-    }
-
-    /**
-     * @param {module:model/LoginRequest} loginRequest 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/LoginResponse}
-     */
-    login(loginRequest) {
-      return this.loginWithHttpInfo(loginRequest)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
-    }
+  /**
+   * @param {module:model/LoginRequest} loginRequest 
+   * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/LoginResponse}
+   */
+  login(loginRequest) {
+    return this.loginWithHttpInfo(loginRequest)
+      .then(function (response_and_data) {
+        return response_and_data.data;
+      });
+  }
 
 
 }

@@ -42,7 +42,7 @@ const { status, data } = await apiInstance.resetPassword(
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 

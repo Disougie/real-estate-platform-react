@@ -1,5 +1,5 @@
 import { X, Bookmark, Building2, Home, Gift, Settings, Power } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, replace, useNavigate } from 'react-router-dom'
 
 const menuItems = [
   {
@@ -34,6 +34,9 @@ export default function SettingsPanel({ isOpen, onClose }) {
 
   const handleNavigation = (path) => {
     onClose()
+    if(path == "/"){
+      localStorage.removeItem("token");
+    }
     navigate(path)
   }
 
@@ -64,8 +67,8 @@ export default function SettingsPanel({ isOpen, onClose }) {
             </button>
           </div>
           <div className="text-right">
-            <h2 className="text-xl font-bold mb-1">احمد محمد احمد محمد</h2>
-            <p className="text-accent text-sm">disougie@gmail.com</p>
+            <h2 className="text-xl font-bold mb-1">{localStorage.getItem('name') || ''}</h2>
+            <p className="text-accent text-sm">{localStorage.getItem('email') || ''}</p>
           </div>
         </div>
 

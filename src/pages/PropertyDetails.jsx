@@ -1,20 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Header from '../components/Header'
 import { apis } from '../api'
 
 function PropertyDetails() {
   const { id } = useParams()
   const [selectedImage, setSelectedImage] = useState(0)
-  const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState()
   const [loading, setLoading] = useState(true)
   const [property, setProperty] = useState(null)
+  const navigation = useNavigate();
 
   useEffect(() => {
     let alive = true
     setLoading(true)
     apis.properties
-      .getProperty({ id: String(id) })
+      .getProperty(String(id))
       .then((res) => {
         if (!alive) return
         setProperty(res.data)
@@ -28,13 +29,42 @@ function PropertyDetails() {
     }
   }, [id])
 
+  useEffect(() => {
+    apis.savedProperties.getMySavedProperties().then(res => {
+      if(res.data.some(p => p.id == id)){
+        setIsFavorite(true);
+      }
+      else {
+        setIsFavorite(false);
+      }
+    })
+  }, [property])
+
   const images = useMemo(() => {
     const urls = property?.imagesUrls || []
     if (urls.length) return urls
     return [
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80',
+      '../assets/property default image.PNG',
     ]
   }, [property])
+
+  const handleAddToFavotrit = async () => {
+    if(!isFavorite){
+      const res = await apis.savedProperties.saveProperty({property_id: property.id});
+      if(res.status == 201) 
+        setIsFavorite(true);
+    }
+    else {
+      const res = await apis.savedProperties.removeFromSaved({property_id: property.id});
+      if(res.status == 204){
+        setIsFavorite(false);
+      }
+    }
+  }
+
+  const handleReservation = (propertyId) => {
+    navigation(`/contracts/create/${propertyId}`)
+  }
 
   return (
     <div className="min-h-screen bg-gray-100" dir="rtl">
@@ -191,7 +221,7 @@ function PropertyDetails() {
                 </div>
 
                 <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                  <span className="text-gray-600 font-medium">الغرض:</span>
+                  <span className="text-gray-600 font-medium">الحالة:</span>
                   <span className="text-gray-900 font-bold">{property.status || '—'}</span>
                 </div>
 
@@ -205,19 +235,20 @@ function PropertyDetails() {
             {/* Action Buttons */}
             <div className="flex gap-4 justify-center">
               <button className="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                اتصال
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                اتصال
               </button>
 
               <button
-                onClick={() => setIsFavorite(!isFavorite)}
+                onClick={handleAddToFavotrit}
                 className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 ${isFavorite
                   ? 'bg-red-500 text-white'
                   : 'bg-white text-primary border-2 border-primary hover:bg-primary/5'
                   }`}
               >
+                اضافة للمفضلة
                 <svg
                   className="w-6 h-6"
                   fill={isFavorite ? "currentColor" : "none"}
@@ -226,7 +257,14 @@ function PropertyDetails() {
                 >
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                اضافة للمفضلة
+              </button>
+
+              <button 
+                className="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                onClick={() => handleReservation(id)}
+              >
+                طلب الحجز
+                <img src="../assets/icons-booking.png" alt="" className='w-[30px]' />
               </button>
             </div>
           </>

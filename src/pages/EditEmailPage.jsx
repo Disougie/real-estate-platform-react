@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apis } from '../api'
 
 export default function EditEmailPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
-    // Handle update email logic here
-    navigate('/account-settings')
+    const res = await apis.changeInfo.changeEmail({newEmail: email});
+    if( res.status == 204){
+      navigate('/account-settings')
+    }
+    else {
+      throw new Error("something went wrong");
+    }
   }
 
   return (
@@ -18,6 +24,9 @@ export default function EditEmailPage() {
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* New Email Field */}
         <div className="flex items-center gap-4">
+          <label className="text-white text-xl font-medium min-w-[160px] text-right">
+            البريد الالكتروني الجديد
+          </label>
           <input
             type="email"
             value={email}
@@ -26,9 +35,6 @@ export default function EditEmailPage() {
             placeholder="ادخل البريد الالكتروني الجديد"
             required
           />
-          <label className="text-white text-xl font-medium min-w-[160px] text-right">
-            البريد الالكتروني الجديد
-          </label>
         </div>
 
         {/* Submit Button */}

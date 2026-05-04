@@ -1,10 +1,45 @@
 import Header from '../components/Header'
 import { Link } from 'react-router-dom'
 import { MoreVertical } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { apis } from '../api'
 
 function PropertyCard({ property }) {
+
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setShowMenu(false);
+        }
+    };
+
+    // إضافة المستمع (Listener) عند فتح القائمة
+    if (showMenu) {
+        document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMenu]);
+  
+  const viewRemoveFromFavorites = (e) => {
+    e.preventDefault();
+    setShowMenu(!showMenu)
+  }
+
+  const removeFromFavourit = async (e) => {
+    e.preventDefault()
+    const res = await apis.savedProperties.removeFromSaved(String(property.id))
+
+    if(res.status == 204)
+      alert("تمت ازالة العقار من المفضلة")
+  }
+
+
   return (
     <Link to={`/property/${property.id}`} className="block">
       <div className="bg-white border-2 border-primary rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
@@ -15,7 +50,7 @@ function PropertyCard({ property }) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        <div className="p-3 flex items-start gap-2">
+        <div className="p-3 flex items-start gap-2 relative">
           <div className="flex-1 text-right">
             <h3 className="font-semibold text-gray-800 text-sm leading-relaxed">
               {property.title}
@@ -26,11 +61,21 @@ function PropertyCard({ property }) {
             className="text-gray-500 hover:text-primary mt-1"
             onClick={(e) => {
               e.preventDefault()
-              e.stopPropagation()
+              viewRemoveFromFavorites(e)
+              console.log("Remove")
             }}
           >
             <MoreVertical size={18} />
           </button>
+          {showMenu && (
+            <div 
+              ref={menuRef}
+              className='px-5 py-2 bg-white text-primary absolute shadow-sm hover:shadow-md left-0'
+              onClick={removeFromFavourit}
+            >
+              ازالة من المفضلة
+            </div>
+          )}
         </div>
       </div>
     </Link>
@@ -59,6 +104,8 @@ export default function SavedPropertiesPage() {
     }
   }, [])
 
+ 
+
   const savedProperties = useMemo(() => {
     return (saved || []).map((p) => ({
       id: p.id,
@@ -66,7 +113,7 @@ export default function SavedPropertiesPage() {
       location: `${p.city || ''}${p.area ? `, ${p.area}` : ''}`,
       image:
         (p.imagesUrls && p.imagesUrls[0]) ||
-        'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80',
+        '../assets/property default image.PNG',
     }))
   }, [saved])
 
@@ -90,7 +137,14 @@ export default function SavedPropertiesPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {savedProperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard 
+                key={property.id} 
+                property={property}
+                // showMenu={showMenu}
+                // menuRef={menuRef}
+                // viewRemoveFromFavorites={viewRemoveFromFavorites}
+                // removeFromFavourit={removeFromFavourit}
+              />
             ))}
           </div>
         )}

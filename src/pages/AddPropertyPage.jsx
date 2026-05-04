@@ -12,16 +12,16 @@ const propertyTypes = [
 const propertyPurposes = ['للبيع', 'للإيجار']
 
 const initialForm = {
+  title: '',
+  description: '',
   type: '',
   purpose: '',
   price: '',
   city: '',
-  neighborhood: '',
   rooms: '',
   bathrooms: '',
   area: '',
-  plotNumber: '',
-  planNumber: '',
+  size: '',
   latitude: '',
   longitude: '',
 }
@@ -86,29 +86,34 @@ export default function AddPropertyPage() {
         : 'PURCHASE'
 
     const payload = {
-      title: `عقار - ${formData.city}${formData.neighborhood ? ` ${formData.neighborhood}` : ''}`.trim(),
+      title: formData.title,
       price: Number(formData.price || 0),
       type: apiType,
       lng: Number(formData.longitude),
       lat: Number(formData.latitude),
-      description: '',
+      description: formData.description,
       rooms: Number(formData.rooms || 0),
       baths: Number(formData.bathrooms || 0),
       images,
       city: formData.city,
-      area: formData.neighborhood,
-      size: Number(formData.area || 0),
+      area: formData.area,
+      size: Number(formData.size || 0),
     }
-
-    await apis.properties.addPropertyAd({ propertyAdPostRequest: payload })
-    alert('تم إضافة العقار بنجاح')
+    
+    const res = await apis.properties.addPropertyAd({ propertyAdPostRequest: payload })
+    if(res.status == 201){
+      alert('تم إضافة العقار بنجاح')
+    }
+    else {
+      throw new Error("something went wrong")
+    }
   }
 
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="container mx-auto px-4 py-8 md:px-6">
+      <main className="container mx-auto px-4 py-8 md:px-6" dir='ltr'>
         <div className="mb-8 bg-white border-r-4 border-primary">
           <h1 className="px-6 py-4 text-right text-3xl font-bold text-primary">
             إضافة عقار
@@ -188,8 +193,8 @@ export default function AddPropertyPage() {
             <Field label="الحي">
               <input
                 type="text"
-                value={formData.neighborhood}
-                onChange={(e) => handleChange('neighborhood', e.target.value)}
+                value={formData.area}
+                onChange={(e) => handleChange('area', e.target.value)}
                 className={inputClassName}
                 required
               />
@@ -221,13 +226,32 @@ export default function AddPropertyPage() {
               <input
                 type="number"
                 min="0"
-                value={formData.area}
-                onChange={(e) => handleChange('area', e.target.value)}
+                value={formData.size}
+                onChange={(e) => handleChange('size', e.target.value)}
                 className={inputClassName}
                 required
               />
             </Field>
           </div>
+
+          <Field label="عنوان الاعلان">
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => handleChange('title', e.target.value)}
+              className={inputClassName}
+              required
+            />
+          </Field>
+
+          <Field label="الوصف">
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+              className={inputClassName}
+              required
+            ></textarea>
+          </Field>
 
           {isMapOpen && (
             <div className="mt-6 rounded-lg bg-white p-4">
@@ -274,10 +298,10 @@ export default function AddPropertyPage() {
 
           <div className="mt-6">
             <label className="mb-3 block text-right text-2xl font-bold text-white">
-              صور العقار:
+              صور العقار
             </label>
 
-            <div className="flex flex-wrap items-center  gap-3">
+            <div className="flex flex-wrap items-center gap-3" dir='rtl'>
               {previewUrls.slice(0, 4).map((url, index) => (
                 <img
                   key={url}

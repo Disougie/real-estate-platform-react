@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apis } from '../api'
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle send reset code logic here
-    navigate('/reset-password')
+   const res = await apis.forgotPassword.forgotPassword({
+    email: email,
+   });
+   if(res.status == 200)
+    alert(res.data.message);
+    navigate('/login');
   }
 
   return (

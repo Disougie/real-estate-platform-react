@@ -68,16 +68,8 @@ const featureCards = [
 
 function BrandLogo() {
   return (
-    <div className="h-16 w-16 rounded-full border-2 border-gray-200 bg-white/95 p-1 shadow-lg">
-      <svg viewBox="0 0 100 100" className="h-full w-full">
-        <rect x="30" y="40" width="40" height="50" fill="#1e3a5f" />
-        <rect x="35" y="50" width="10" height="10" fill="#4cc9f0" />
-        <rect x="55" y="50" width="10" height="10" fill="#4cc9f0" />
-        <rect x="35" y="65" width="10" height="10" fill="#4cc9f0" />
-        <rect x="55" y="65" width="10" height="10" fill="#4cc9f0" />
-        <polygon points="50,20 20,45 80,45" fill="#2d4a6f" />
-        <circle cx="50" cy="12" r="8" fill="#c9a227" stroke="#1e3a5f" strokeWidth="2" />
-      </svg>
+    <div className="h-22 w-24 rounded-full border-gray-200  p-1">
+      <img src="../assets/LogoPic.png" alt="logo" className="w-[65px] h-[65px]" />
     </div>
   )
 }

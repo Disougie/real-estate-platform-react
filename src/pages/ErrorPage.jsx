@@ -59,15 +59,6 @@ export default function ErrorPage() {
               </p>
             </div>
 
-            <div className="rounded-xl bg-gray-50 p-4">
-              <p className="mb-2 text-right font-bold text-gray-800">
-                بيانات الخطأ (JSON)
-              </p>
-              <pre className="overflow-auto rounded-lg bg-white p-4 text-left text-sm text-gray-800 ring-1 ring-gray-200">
-                {JSON.stringify(safePayload, null, 2)}
-              </pre>
-            </div>
-
             <div className="flex flex-wrap justify-start gap-3 pt-2">
               <button
                 type="button"
@@ -83,7 +74,7 @@ export default function ErrorPage() {
                 تسجيل دخول
               </Link>
               <Link
-                to="/"
+                to={localStorage.getItem('token') ? '/home' : '/login'}
                 className="rounded-lg border border-gray-300 bg-white px-8 py-3 font-bold text-gray-700 transition hover:bg-gray-100"
               >
                 الصفحة الرئيسية

@@ -1,15 +1,25 @@
 import { useNavigate } from 'react-router-dom'
 import { SquarePen } from 'lucide-react'
 import Header from '../components/Header'
+import { apis } from '../api'
+import { useEffect, useState } from 'react'
 
 export default function AccountSettingsPage() {
   const navigate = useNavigate()
+  const [phone, setPhone] = useState();
+
+  useEffect(() => {
+    apis.users.getUser(
+      Number(localStorage.getItem('id'))
+    ).then(res => setPhone(res.data.phone));
+
+  }, []);
 
   const userInfo = {
-    name: 'احمد محمد احمد محمد',
-    email: 'disougie@gmail.com',
-    phone: '+249 11 222 4444',
-    password: 'a******'
+    name: localStorage.getItem('name') || "",
+    email: localStorage.getItem('email') || "",
+    phone: phone,
+    password: '*******'
   }
 
   const settingsItems = [
@@ -31,7 +41,7 @@ export default function AccountSettingsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-100" dir='ltr'>
+    <div className="min-h-screen bg-gray-100">
       <Header />
       
       {/* User Name Banner */}
@@ -44,7 +54,7 @@ export default function AccountSettingsPage() {
       </div>
 
       {/* Settings Cards */}
-      <div className="max-w-4xl mx-auto px-6 py-8 space-y-4">
+      <div className="max-w-4xl mx-auto px-6 py-8 space-y-4" dir='ltr'>
         {settingsItems.map((item, index) => (
           <div 
             key={index}

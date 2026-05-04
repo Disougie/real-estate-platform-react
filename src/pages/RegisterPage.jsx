@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apis } from '../api'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -10,15 +11,31 @@ export default function RegisterPage() {
     password: '',
     confirmPassword: ''
   })
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (formData.password !== formData.confirmPassword) {
       alert('كلمة السر غير متطابقة')
       return
     }
-    // Handle registration logic here
-    navigate('/login')
+    const res = await apis.registration.register({
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+    })
+    
+    if(res.status == 200) {
+      navigate('/login')
+    }
+    if(res.status == 400){
+      setError(res.data.message);
+    }
+    else {
+      throw Error("something went wrong");
+    }
   }
 
   return (
@@ -97,6 +114,8 @@ export default function RegisterPage() {
             required
           />
         </div>
+
+        <p className='text-red'>{error}</p>
 
         {/* Submit Button */}
         <div className="flex justify-center pt-4">

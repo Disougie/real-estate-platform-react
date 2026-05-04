@@ -44,7 +44,7 @@ const { status, data } = await apiInstance.resendToken(
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -94,7 +94,7 @@ const { status, data } = await apiInstance.verifyChangeEmail(
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -144,7 +144,7 @@ const { status, data } = await apiInstance.verifyToken(
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 

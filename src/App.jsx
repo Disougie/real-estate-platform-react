@@ -25,6 +25,7 @@ import LawyerContractDetailsPage from './pages/lawyer/LawyerContractDetailsPage'
 import MyContractsPage from './pages/lawyer/MyContractsPage'
 import AdminDashboardLayout from './pages/admin/AdminDashboardLayout'
 import AdminDashboardHomePage from './pages/admin/AdminDashboardHomePage'
+import ContractCreationPage from './pages/ContractCreationPage'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/my-properties" element={<MyPropertiesPage />} />
         <Route path="/saved-properties" element={<SavedPropertiesPage />} />
         <Route path="/contracts" element={<ContractsPage />} />
+        <Route path="/contracts/create/:propertyId" element={<ContractCreationPage />} />
         <Route path="/contracts/:id" element={<ContractDetailsPage />} />
         <Route path="/account-settings" element={<AccountSettingsPage />} />
         <Route path="/edit-email" element={<EditEmailPage />} />
@@ -55,7 +57,7 @@ function App() {
           path="/lawyer"
           element={
             // <RoleGuard allowedRoles={['lawyer']}>
-              <LawyerDashboardLayout />
+            <LawyerDashboardLayout />
             // </RoleGuard>
           }
         >
@@ -69,12 +71,14 @@ function App() {
           path="/admin"
           element={
             // <RoleGuard allowedRoles={['admin']}>
-              <AdminDashboardLayout />
+            <AdminDashboardLayout />
             // </RoleGuard>
           }
         >
           <Route index element={<AdminDashboardHomePage />} />
         </Route>
+        
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   )
