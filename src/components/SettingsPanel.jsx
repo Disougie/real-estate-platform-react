@@ -25,7 +25,7 @@ const menuItems = [
   {
     icon: Power,
     label: 'تسجيل خروج',
-    path: '/'
+    path: '/login'
   }
 ]
 

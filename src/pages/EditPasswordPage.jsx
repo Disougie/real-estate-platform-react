@@ -86,16 +86,6 @@ export default function ResetPasswordPage() {
             تأكيد
           </button>
         </div>
-
-        {/* Back to Login Link */}
-        <div className="flex justify-center pt-2">
-          <Link 
-            to="/login" 
-            className="text-white hover:text-accent transition-colors"
-          >
-            العودة لتسجيل الدخول
-          </Link>
-        </div>
       </form>
     </div>
   )

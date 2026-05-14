@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 
 function tryParseJson(value) {
@@ -11,7 +11,8 @@ function tryParseJson(value) {
 }
 
 export default function ErrorPage() {
-  const location = useLocation()
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const payload = useMemo(() => {
     const params = new URLSearchParams(location.search)
@@ -28,6 +29,10 @@ export default function ErrorPage() {
     status: 'UNKNOWN',
     message: 'حدث خطأ غير متوقع',
     time: new Date().toISOString(),
+  }
+
+  if (safePayload.status == 403) {
+    navigate('/login', { replace: true });
   }
 
   return (

@@ -20,13 +20,13 @@ function HomePage() {
     type: null,
     city: null,
     area: null,
-    minRooms: 4,
-    maxRooms: 6,
+    minRooms: 1,
+    maxRooms: 4,
     minBaths: 1,
     maxBaths: 2,
-    minPrice: 2000000,
+    minPrice: 100000,
     maxPrice: 3000000,
-    minSeize: 80,
+    minSize: 80,
     maxSize: 300,
   })
 
@@ -35,27 +35,35 @@ function HomePage() {
   }
 
   const fetchData = async () => {
-    
+
     setLoading(true);
     try {
-        let res;
-        if (mode === 'DEFAULT') {
-            res = await apis.properties.getProperties(page, size );
-            setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
-        } else if(mode == 'TEXT_SEARCH') {
-            let text = String(searchText).trim();
-            res = await apis.properties.searchByText(text, page, size)
-            setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
-        } else if(mode == 'FILTER_SEARCH') {
-            res = await apis.properties.searchByFilters({...filters, page, size});
-            setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
-        } else if(mode == 'RECOMMENDATION') {
-            res = await apis.recommendations.getRecommendations();
-            setData({content: res.data || [], totalPages: 1, totalElements: res.data.length});
-        }
+      let res;
+      if (mode === 'DEFAULT') {
+        res = await apis.properties.getProperties(page, size);
+        setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
+      } else if (mode == 'TEXT_SEARCH') {
+        let text = String(searchText).trim();
+        res = await apis.properties.searchByText(text, page, size)
+        setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
+      } else if (mode == 'FILTER_SEARCH') {
+        res = await apis.properties.searchByFilters(
+          filters.type,
+          filters.city, filters.area,
+          filters.minRooms, filters.maxRooms,
+          filters.minBaths, filters.maxBaths,
+          filters.minPrice, filters.maxPrice,
+          filters.minSize, filters.maxSize,
+          page, size
+        );
+        setData(res.data || { content: [], totalPages: 0, totalElements: 0 })
+      } else if (mode == 'RECOMMENDATION') {
+        res = await apis.recommendations.getRecommendations();
+        setData({ content: res.data || [], totalPages: 1, totalElements: res.data.length });
+      }
 
     } catch (error) {
-        console.error("Error fetching data", error);
+      console.error("Error fetching data", error);
     } finally {
       setLoading(false);
     }
@@ -67,11 +75,19 @@ function HomePage() {
   }, [page, size, mode])
 
   const handleTextSearch = () => {
+    if(mode === 'TEXT_SEARCH') {
+      fetchData();
+      return;
+    }
     setPage(0);
     setMode('TEXT_SEARCH')
   }
-  
+
   const handleFilterSearch = () => {
+    if(mode === 'FILTER_SEARCH') {
+      fetchData();
+      return;
+    }
     setPage(0);
     setMode('FILTER_SEARCH')
   }
@@ -86,13 +102,13 @@ function HomePage() {
       type: null,
       city: null,
       area: null,
-      minRooms: 4,
-      maxRooms: 6,
+      minRooms: 1,
+      maxRooms: 4,
       minBaths: 1,
       maxBaths: 2,
-      minPrice: 2000000,
+      minPrice: 100000,
       maxPrice: 3000000,
-      minSeize: 80,
+      minSize: 80,
       maxSize: 300,
     })
   }
@@ -100,7 +116,7 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <div className="flex flex-col lg:flex-row-reverse">
         {/* Main Content */}
         <main className="flex-1 p-4 lg:p-6">
@@ -130,8 +146,8 @@ function HomePage() {
           </div>
 
           {/* Property Grid */}
-          <PropertyGrid loading={loading} data={data}/>
-          
+          <PropertyGrid loading={loading} data={data} />
+
           {/* Pagenation */}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-4">
             <div className="text-sm text-gray-600">
@@ -168,9 +184,9 @@ function HomePage() {
         </main>
 
         {/* Sidebar */}
-        <Sidebar 
-          filters={filters} 
-          setFilters={setFilters} 
+        <Sidebar
+          filters={filters}
+          setFilters={setFilters}
           onSearch={handleFilterSearch}
           onReset={handleReset}
         />

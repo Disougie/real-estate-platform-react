@@ -36,7 +36,7 @@ export default function AccountSettingsPage() {
     {
       label: 'كلمة السر',
       value: userInfo.password,
-      action: () => navigate('/reset-password')
+      action: () => navigate('/edit-password')
     }
   ]
 

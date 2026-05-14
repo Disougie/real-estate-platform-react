@@ -37,12 +37,12 @@ export default function ContractsPage() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header activeNav="العقود المبدئية" />
+      <Header activeNav="الحجوزات المبدئية" />
       
       <main className="max-w-5xl mx-auto px-4 py-8">
         {loading ? (
           <div className="rounded-2xl bg-white p-8 text-center text-gray-600 shadow">
-            جاري تحميل العقود...
+            جاري تحميل الحجوزات...
           </div>
         ) : (
           <div className="space-y-6">
@@ -77,7 +77,7 @@ export default function ContractsPage() {
         
         {!loading && contracts.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-xl">لا توجد عقود حالياً</p>
+            <p className="text-gray-500 text-xl">لا توجد حجوزات حالياً</p>
           </div>
         )}
       </main>

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import PropertyTabs from '../components/PropertyTabs'
 
-const areas = ['اختر المنطقة', 'الدناقلة', 'الصيافي', 'المزاد', 'الصافية', 'الشعبية']
-const cities = ['اختر المدينة', 'الخرطوم', 'بحري', 'امدرمان', 'الجيلي', 'الكلاكلة']
+const areas = ['اختر المنطقة', 'الدناقلة', 'المزاد', 'الصافية', 'الشعبية']
+const cities = ['اختر المدينة', 'الخرطوم', 'بحري', 'ام درمان']
 
-export default function Sidebar({ filters, setFilters, onSearch }) {
+export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
   const [activeTab, setActiveTab] = useState()
   const [areaOpen, setareaOpen] = useState(false)
   const [cityOpen, setCityOpen] = useState(false)
@@ -46,18 +46,32 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
     }))
   }
 
+  const handleSizeIncrement = (field, amount = 10) => {
+    setFilters(prev => ({
+      ...prev,
+      [field]: prev[field] + amount
+    }))
+  }
+
+  const handleSizeDecrement = (field, min = 0, amount = 10) => {
+    setFilters(prev => ({
+      ...prev,
+      [field]: Math.max(prev[field] - amount, min)
+    }))
+  }
+
   return (
-    <aside className="bg-gray-100 p-4 w-full lg:w-80 border-r border-gray-300">
+    <aside className="bg-gray-100 p-4 w-full lg:w-80 border-r border-gray-300" >
       <PropertyTabs activeTab={activeTab} handleTypeChange={handleTypeChange} />
       {/* Header */}
       <div className="flex items-center justify-between my-4">
+        <span className="text-gray-700 font-medium">خيارات البحث</span>
         <button 
           className="px-4 py-2 border border-gray-400 rounded text-gray-700 hover:bg-gray-200 transition-colors"
-          onClick={setFilters}
+          onClick={() => {setActiveTab(null); onReset()}}
         >
           إعادة ضبط
         </button>
-        <span className="text-gray-700 font-medium">خيارات البحث</span>
       </div>
 
       {/* area & City */}
@@ -133,22 +147,6 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handleDecrement('maxRooms')}
-              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
-            >
-              <ChevronRight size={16} />
-            </button>
-            <span className="w-8 text-center">{filters.maxRooms}</span>
-            <button 
-              onClick={() => handleIncrement('maxRooms')}
-              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
-            >
-              <ChevronLeft size={16} />
-            </button>
-          </div>
-          <span className="text-gray-600">إلى</span>
-          <div className="flex items-center gap-1">
-            <button 
               onClick={() => handleDecrement('minRooms')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
@@ -162,6 +160,22 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
               <ChevronLeft size={16} />
             </button>
           </div>
+          <span className="text-gray-600">إلى</span>
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => handleDecrement('maxRooms')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <span className="w-8 text-center">{filters.maxRooms}</span>
+            <button 
+              onClick={() => handleIncrement('maxRooms')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -169,22 +183,6 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2 text-right">عدد الحمامات</label>
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1">
-            <button 
-              onClick={() => handleDecrement('maxBaths')}
-              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
-            >
-              <ChevronRight size={16} />
-            </button>
-            <span className="w-8 text-center">{filters.maxBaths}</span>
-            <button 
-              onClick={() => handleIncrement('maxBaths')}
-              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
-            >
-              <ChevronLeft size={16} />
-            </button>
-          </div>
-          <span className="text-gray-600">إلى</span>
           <div className="flex items-center gap-1">
             <button 
               onClick={() => handleDecrement('minBaths')}
@@ -200,13 +198,45 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
               <ChevronLeft size={16} />
             </button>
           </div>
+          <span className="text-gray-600">إلى</span>
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => handleDecrement('maxBaths')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <span className="w-8 text-center">{filters.maxBaths}</span>
+            <button 
+              onClick={() => handleIncrement('maxBaths')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Price Range */}
-      <div className="mb-6">
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2 text-right">سعر العقار</label>
         <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => handlePriceDecrement('minPrice')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <span className="w-16 text-center text-sm">{filters.minPrice}</span>
+            <button 
+              onClick={() => handlePriceIncrement('minPrice')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          </div>
+          <span className="text-gray-600">إلى</span>
           <div className="flex items-center gap-1">
             <button 
               onClick={() => handlePriceDecrement('maxPrice')}
@@ -222,17 +252,39 @@ export default function Sidebar({ filters, setFilters, onSearch }) {
               <ChevronLeft size={16} />
             </button>
           </div>
-          <span className="text-gray-600">إلى</span>
+        </div>
+      </div>
+
+      {/* Size Range */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2 text-right">مساحة العقار</label>
+        <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <button 
-              onClick={() => handlePriceDecrement('minPrice')}
+              onClick={() => handleSizeDecrement('minSize')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronRight size={16} />
             </button>
-            <span className="w-16 text-center text-sm">{filters.minPrice}</span>
+            <span className="w-16 text-center text-sm">{filters.minSize}</span>
             <button 
-              onClick={() => handlePriceIncrement('minPrice')}
+              onClick={() => handleSizeIncrement('minSize')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          </div>
+          <span className="text-gray-600">إلى</span>
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={() => handleSizeDecrement('maxSize')}
+              className="p-1 border border-gray-400 rounded hover:bg-gray-200"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <span className="w-16 text-center text-sm">{filters.maxSize}</span>
+            <button 
+              onClick={() => handleSizeIncrement('maxSize')}
               className="p-1 border border-gray-400 rounded hover:bg-gray-200"
             >
               <ChevronLeft size={16} />

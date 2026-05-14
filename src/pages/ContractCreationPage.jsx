@@ -117,13 +117,13 @@ export default function ContractDetailsPage() {
 
         <div className="bg-gray-50 rounded-xl overflow-hidden shadow-2xl">
 
-          Property Data Section
+          {/* Property Data Section */}
           <div className="mb-1">
             <SectionHeader titleAr="بيانات العقار" titleEn="PROPERTY DATA" />
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'الموقع:', value: `${property.location.city } ,${property.location.area}` },
+                  { label: 'الموقع:', value: property?.location?.city || '-' },
                   { label: 'الغرض من إستخدام العقار:', value: property.type },
                 ]}
               />

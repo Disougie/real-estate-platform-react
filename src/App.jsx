@@ -26,6 +26,7 @@ import MyContractsPage from './pages/lawyer/MyContractsPage'
 import AdminDashboardLayout from './pages/admin/AdminDashboardLayout'
 import AdminDashboardHomePage from './pages/admin/AdminDashboardHomePage'
 import ContractCreationPage from './pages/ContractCreationPage'
+import EditPasswordPage from './pages/EditPasswordPage'
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/account-settings" element={<AccountSettingsPage />} />
         <Route path="/edit-email" element={<EditEmailPage />} />
         <Route path="/edit-phone" element={<EditPhonePage />} />
+        <Route path="/edit-password" element={<EditPasswordPage />} />
         <Route path="/add-property" element={<AddPropertyPage />} />
         <Route path="/notifications" element={<NotificationPage />} />
         <Route path="/blogs" element={<BlogPage />} />
