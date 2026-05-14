@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apis } from '../api'
+import Logo from '/assets/LogoPic.png'
 
 export default function EditPhonePage() {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ export default function EditPhonePage() {
 
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
-      <img src="../assets/LogoPic.png" alt="logo" className="w-48 h-48 mb-12" />
+      <img src={Logo} alt="logo" className="w-48 h-48 mb-12" />
       
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* New Phone Field */}

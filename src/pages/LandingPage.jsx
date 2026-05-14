@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-// import PropertyBackground from '../assets/PropertyBackground.png'
+import PropertyBackground from '/assets/PropertyBackground.png'
 
-const heroBackground = '../assets/PropertyBackground.png';
+// const heroBackground = '../assets/PropertyBackground.png';
 const featureCards = [
   {
     title: 'توفير المال',
@@ -101,7 +101,7 @@ export default function LandingPage() {
       <section
         className="relative flex min-h-[100vh] items-center justify-center overflow-hidden px-4"
         style={{
-          backgroundImage: `url("${heroBackground}")`,
+          backgroundImage: `url(${PropertyBackground})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

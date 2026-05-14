@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { apis } from '../api'
 import PropertyCard from './PropertyCard'
+import PropertyDefaultImage from '/assets/property default image.PNG'
 
 export default function PropertyGrid({loading, data}) {
   // const [page, setPage] = useState(0)
@@ -34,7 +35,7 @@ export default function PropertyGrid({loading, data}) {
       location: p.area || '',
       image:
         p.imageUrl ||
-        '../assets/property default image.PNG',
+        PropertyDefaultImage,
     }))
   }, [data])
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SettingsPanel from './SettingsPanel'
+import Logo from '/assets/LogoPic.png'
 
 const navItems = [
   { label: 'بحث الخرائط', path: '/map-search' },
@@ -46,7 +47,8 @@ export default function Header({ activeNav }) {
           {/* Logo */}
           <div className="flex items-center gap-4">
             <Link to="/home">
-            <img src="../assets/LogoPic.png" alt="logo" className="w-[65px] h-[65px]" />
+            {/* <Logo className="w-[65px] h-[65px]" /> */}
+            <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
             </Link>
           </div>
 
