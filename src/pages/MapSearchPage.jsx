@@ -13,22 +13,22 @@ function LegendShape({ shape, color }) {
     case 'triangle':
       return (
         <svg width="24" height="24" viewBox="0 0 24 24">
-          <polygon points="12,4 20,20 4,20" fill={color} stroke="#fff" strokeWidth="1"/>
+          <polygon points="12,4 20,20 4,20" fill={color} stroke="#fff" strokeWidth="1" />
         </svg>
       );
     case 'square':
       return (
         <svg width="24" height="24" viewBox="0 0 24 24">
-          <rect x="4" y="4" width="16" height="16" fill={color} stroke="#fff" strokeWidth="1"/>
+          <rect x="4" y="4" width="16" height="16" fill={color} stroke="#fff" strokeWidth="1" />
         </svg>
       );
     case 'star':
       return (
         <svg width="24" height="24" viewBox="0 0 24 24">
-          <polygon 
-            points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" 
-            fill={color} 
-            stroke="#fff" 
+          <polygon
+            points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"
+            fill={color}
+            stroke="#fff"
             strokeWidth="1"
           />
         </svg>
@@ -36,7 +36,7 @@ function LegendShape({ shape, color }) {
     default:
       return (
         <svg width="24" height="24" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="8" fill={color} stroke="#fff" strokeWidth="1"/>
+          <circle cx="12" cy="12" r="8" fill={color} stroke="#fff" strokeWidth="1" />
         </svg>
       );
   }
@@ -52,13 +52,13 @@ export default function MapSearchPage() {
   return (
     <div className="min-h-screen bg-gray-100" dir="rtl">
       <Header activeNav="بحث الخرائط" />
-      
+
       <div className="relative h-[calc(100vh-80px)]">
         {/* Map Container */}
         <div className="absolute inset-0">
           <PropertyMap filters={activeFilter ? { type: activeFilter } : {}} />
         </div>
-        
+
         {/* Legend Panel */}
         <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 z-[1000] min-w-[200px]">
           <div className="space-y-3">
@@ -68,8 +68,8 @@ export default function MapSearchPage() {
                 onClick={() => handleFilterClick(item.type)}
                 className={`
                   flex items-center justify-between w-full p-2 rounded-lg transition-all
-                  ${activeFilter === item.type 
-                    ? 'bg-gray-100 ring-2 ring-primary' 
+                  ${activeFilter === item.type
+                    ? 'bg-gray-100 ring-2 ring-primary'
                     : 'hover:bg-gray-50'
                   }
                 `}
@@ -79,7 +79,7 @@ export default function MapSearchPage() {
               </button>
             ))}
           </div>
-          
+
           {activeFilter && (
             <button
               onClick={() => setActiveFilter(null)}
@@ -89,9 +89,9 @@ export default function MapSearchPage() {
             </button>
           )}
         </div>
-        
+
         {/* Search Controls */}
-        <div className="absolute bottom-4 right-4 left-4 md:right-auto md:left-auto md:w-96 z-[1000]">
+        {/* <div className="absolute bottom-4 right-4 left-4 md:right-auto md:left-auto md:w-96 z-[1000]">
           <div className="bg-white rounded-lg shadow-lg p-4">
             <div className="flex gap-2">
               <input
@@ -106,8 +106,8 @@ export default function MapSearchPage() {
               </button>
             </div>
           </div>
-        </div>
-        
+        </div> */}
+
         {/* Zoom Controls Info */}
         <div className="absolute bottom-20 left-4 z-[1000] hidden md:block">
           <div className="bg-white rounded-lg shadow-lg p-3 text-sm text-gray-600 text-right">

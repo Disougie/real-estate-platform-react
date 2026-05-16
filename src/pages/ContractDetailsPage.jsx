@@ -1,6 +1,8 @@
 import Header from '../components/Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import { apis } from '../api'
 
 // Section Header Component
@@ -58,13 +60,45 @@ export default function ContractDetailsPage() {
     }
   }, [id])
 
-  const handleConfirm = () => {
-    alert('تم تأكيد العقد بنجاح')
-    navigate('/contracts')
+  const handleConfirm = async () => {
+    try {
+      const res = await apis.contracts.acceptContract(Number(id));
+      if(res.status == 204 || res.status == 200) {
+        toast.success('تم تأكيد العقد بنجاح')
+        navigate('/contracts')
+      } else {
+        toast.error('حدث خطأ أثناء تأكيد العقد')
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'حدث خطأ أثناء تأكيد العقد')
+    }
   }
+  
+  const handleCancel = async () => {
+    const result = await Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: 'لن تتمكن من التراجع عن هذا الإجراء!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#1e3a8a',
+      confirmButtonText: 'نعم، قم بالإلغاء',
+      cancelButtonText: 'تراجع'
+    });
 
-  const handleCancel = () => {
-    navigate('/contracts')
+    if (result.isConfirmed) {
+      try {
+        const res = await apis.contracts.rejectContract(Number(id));
+        if(res.status == 204 || res.status == 200) {
+          toast.success('تم الغاء العقد بنجاح')
+          navigate('/contracts')
+        } else {
+          toast.error('حدث خطأ أثناء إلغاء العقد')
+        }
+      } catch (err) {
+        toast.error(err.response?.data?.message || 'حدث خطأ أثناء إلغاء العقد')
+      }
+    }
   }
 
   return (
@@ -85,6 +119,7 @@ export default function ContractDetailsPage() {
         )}
 
         {!loading && contract && (
+        <>
         <div className="bg-gray-50 rounded-xl overflow-hidden shadow-2xl">
           {/* Contract Data Section */}
           <div className="mb-1">
@@ -181,23 +216,28 @@ export default function ContractDetailsPage() {
             </div>
           </div>
         </div>
+        {/* Action Buttons */}
+        {(new Date(contract.expire_at) - new Date()) > 0 && (contract.status == 'PENDING_APPROVAL' || contract.status == 'PENDING_PROCESSING') && (
+          <div className="flex justify-center gap-4 mt-8">
+            {contract.owner_data?.email.trim().substring(1) == localStorage.getItem('email').trim() && (
+              <button
+              onClick={handleConfirm}
+              className="px-12 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors text-lg"
+              >
+                تأكيد
+              </button>
+            )}
+            <button
+              onClick={handleCancel}
+              className="px-12 py-3 bg-white text-red-500 font-bold rounded-lg border-2 border-red-500 hover:bg-red-50 transition-colors text-lg"
+              >
+              إلغاء
+            </button>
+          </div>
+        )}
+        </>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex justify-center gap-4 mt-8">
-          <button
-            onClick={handleConfirm}
-            className="px-12 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors text-lg"
-          >
-            تأكيد
-          </button>
-          <button
-            onClick={handleCancel}
-            className="px-12 py-3 bg-white text-red-500 font-bold rounded-lg border-2 border-red-500 hover:bg-red-50 transition-colors text-lg"
-          >
-            إلغاء
-          </button>
-        </div>
       </main>
     </div>
   )

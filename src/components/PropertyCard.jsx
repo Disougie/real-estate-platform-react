@@ -1,6 +1,7 @@
 import { MoreVertical } from 'lucide-react'
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
 
 export default function PropertyCard({ property }) {
@@ -32,12 +33,18 @@ export default function PropertyCard({ property }) {
 
   const addToFavourit = async (e) => {
     e.preventDefault()
-    const res = await apis.savedProperties.saveProperty({
-      property_id: String(property.id),
-    })
+    try {
+      const res = await apis.savedProperties.saveProperty({
+        property_id: String(property.id),
+      })
 
-    if(res.status == 201)
-      alert("تمت اضافة العقار الى المفضلة")
+      if(res.status == 201 || res.status == 200) {
+        toast.success("تمت اضافة العقار الى المفضلة")
+        setShowMenu(false)
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "حدث خطأ أثناء الإضافة للمفضلة")
+    }
   }
 
 

@@ -2,18 +2,20 @@ import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SettingsPanel from './SettingsPanel'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
-const navItems = [
-  { label: 'بحث الخرائط', path: '/map-search' },
-  { label: 'الحجوزات المبدئية', path: '/contracts' },
-  { label: 'الاشعارات', path: '/notifications' },
-  { label: 'المدونة', path: '/blogs' },
-]
 
 export default function Header({ activeNav }) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
+  
+  const role = localStorage.getItem('role');
+  const navItems  = (role != 'user') ? [] : [
+    { label: 'بحث الخرائط', path: '/map-search' },
+    { label: 'الحجوزات المبدئية', path: '/contracts' },
+    { label: 'الاشعارات', path: '/notifications' },
+    { label: 'المدونة', path: '/blogs' },
+  ]
+  
   return (
     <>
       <header className="bg-primary text-white">
@@ -46,7 +48,7 @@ export default function Header({ activeNav }) {
 
           {/* Logo */}
           <div className="flex items-center gap-4">
-            <Link to="/home">
+            <Link to={localStorage.getItem('role') == 'user' ? "/home" : localStorage.getItem('role') == 'admin' ? "/admin" : "/lawyer"}>
             {/* <Logo className="w-[65px] h-[65px]" /> */}
             <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
             </Link>

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import { apis } from '../../api'
 
 function Section({ title, children }) {
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="flex items-center justify-between bg-primary px-5 py-4 text-white">
-        <span className="text-sm font-semibold opacity-90">DETAILS</span>
         <h2 className="text-xl font-extrabold">{title}</h2>
+        <span className="text-sm font-semibold opacity-90">DETAILS</span>
       </div>
       <div className="p-5">{children}</div>
     </section>
@@ -17,8 +19,8 @@ function Section({ title, children }) {
 function Row({ label, value }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-3 last:border-b-0">
-      <div className="text-left text-gray-600">{value}</div>
       <div className="text-right font-bold text-gray-800">{label}</div>
+      <div className="text-left text-gray-600">{value}</div>
     </div>
   )
 }
@@ -33,7 +35,7 @@ export default function LawyerContractDetailsPage() {
     let alive = true
     setLoading(true)
     apis.lawyer
-      .getContract({ id: Number(id) })
+      .getContract(Number(id))
       .then((res) => {
         if (!alive) return
         setContract(res.data)
@@ -51,20 +53,30 @@ export default function LawyerContractDetailsPage() {
     return <Navigate to="/lawyer" replace />
   }
 
-  const handleAccept = () => {
-    apis.contracts
-      .acceptContract({ id: Number(id) })
-      .then(() => {
-        alert('تم قبول العقد وإضافته إلى عقودى')
+  const handleAccept = async () => {
+    try {
+      const res = await apis.lawyer.workingOnContract(Number(id));
+      if (res.status === 204 || res.status === 200) {
+        await Swal.fire({
+          title: 'نجاح!',
+          text: 'تم قبول الحجز وإضافته إلى حجوزاتي',
+          icon: 'success',
+          confirmButtonColor: '#1e3a8a'
+        });
         navigate('/lawyer/my-contracts')
-      })
+      } else {
+        toast.error('حدث خطأ أثناء قبول الحجز. الرجاء المحاولة لاحقًا.')
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'حدث خطأ أثناء قبول الحجز. الرجاء المحاولة لاحقًا.')
+    }
   }
 
   return (
     <div className="space-y-5">
       <div className="border-r-4 border-primary bg-white">
         <h1 className="px-6 py-4 text-right text-3xl font-bold text-primary">
-          تفاصيل العقد المبدئي
+          تفاصيل الحجز المبدئي
         </h1>
       </div>
 
@@ -74,8 +86,8 @@ export default function LawyerContractDetailsPage() {
         </div>
       ) : (
         <>
-          <Section title="بيانات العقد">
-            <Row label="رقم العقد" value={String(contract.id ?? '—')} />
+          <Section title="بيانات الحجز">
+            <Row label="رقم الحجز" value={String(contract.id ?? '—')} />
             <Row
               label="التاريخ"
               value={
@@ -87,7 +99,7 @@ export default function LawyerContractDetailsPage() {
             <Row label="الحالة" value={contract.status || '—'} />
           </Section>
 
-          <Section title="أطراف العقد">
+          <Section title="أطراف الحجز">
             <Row label="المالك" value={contract.owner_data?.name || '—'} />
             <Row label="المشتري" value={contract.seeker_data?.name || '—'} />
           </Section>
@@ -97,22 +109,21 @@ export default function LawyerContractDetailsPage() {
             <Row label="الغرض" value={contract.property_data?.purpose || '—'} />
             <Row label="المساحة" value={contract.property_data?.size || '—'} />
           </Section>
-
           <div className="flex flex-wrap justify-center gap-3 pt-2">
+            <button
+              type="button"
+              onClick={handleAccept}
+              className="rounded-lg bg-primary px-10 py-3 text-lg font-bold text-white transition hover:bg-primary/90"
+              disabled={contract.status !== 'PENDING_PROCESSING'}
+            >
+              قبول العقد
+            </button>
             <button
               type="button"
               onClick={() => navigate(-1)}
               className="rounded-lg border-2 border-primary bg-white px-8 py-3 text-lg font-bold text-primary transition hover:bg-primary/5"
             >
               رجوع
-            </button>
-            <button
-              type="button"
-              onClick={handleAccept}
-              className="rounded-lg bg-primary px-10 py-3 text-lg font-bold text-white transition hover:bg-primary/90"
-              disabled={contract.status !== 'PENDING_APPROVAL'}
-            >
-              قبول العقد
             </button>
           </div>
         </>

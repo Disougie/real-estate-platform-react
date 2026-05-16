@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** |  | [optional] [default to undefined]
 **role** | **string** |  | [optional] [default to undefined]
+**id** | **number** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -16,6 +17,7 @@ import { LoginResponse } from './api';
 const instance: LoginResponse = {
     name,
     role,
+    id,
 };
 ```
 

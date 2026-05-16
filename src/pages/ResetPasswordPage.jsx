@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate()
@@ -13,17 +14,21 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (formData.newPassword !== formData.confirmPassword) {
-      alert('كلمة السر غير متطابقة')
+      toast.error('كلمة السر غير متطابقة')
       return
     }
-    const res = await apis.resetPassword.resetPassword({
-      newPassword: formData.newPassword,
-      confirmPasswordPassword: formData.confirmPassword,
-    });
-    if(res.status == 204) {
-      alert("Password changed successfully");
-      localStorage.removeItem("token");
-      navigate('/login')
+    try {
+      const res = await apis.resetPassword.resetPassword({
+        newPassword: formData.newPassword,
+        confirmPasswordPassword: formData.confirmPassword,
+      });
+      if(res.status == 204 || res.status == 200) {
+        toast.success("تم تغيير كلمة السر بنجاح");
+        localStorage.removeItem("token");
+        navigate('/login')
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "حدث خطأ أثناء تغيير كلمة السر");
     }
   }
 

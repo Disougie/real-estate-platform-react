@@ -6,12 +6,15 @@ import { useEffect, useState } from 'react'
 
 export default function AccountSettingsPage() {
   const navigate = useNavigate()
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState('');
 
   useEffect(() => {
+    if(localStorage.getItem('role') != 'user'){
+      return;
+    }
     apis.users.getUser(
       Number(localStorage.getItem('id'))
-    ).then(res => setPhone(res.data.phone));
+    ).then(res => setPhone(res.data?.phone || ''));
 
   }, []);
 

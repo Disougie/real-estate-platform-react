@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import HomePage from './pages/HomePage'
 import LandingPage from './pages/LandingPage'
 import PropertyDetails from './pages/PropertyDetails'
@@ -30,8 +31,10 @@ import EditPasswordPage from './pages/EditPasswordPage'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <>
+      <Toaster position="top-center" />
+      <BrowserRouter>
+        <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -81,8 +84,9 @@ function App() {
         </Route>
         
         <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 

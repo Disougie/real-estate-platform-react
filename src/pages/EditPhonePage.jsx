@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apis } from '../api'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
 export default function EditPhonePage() {
   const navigate = useNavigate()

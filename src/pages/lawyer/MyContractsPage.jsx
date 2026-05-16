@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
 import { apis } from '../../api'
 
 function StatusPill({ status }) {
@@ -64,36 +65,37 @@ export default function MyContractsPage() {
     }))
   }, [raw])
 
-  const handleBlock = (id) => {
+  const handleBlock = async (id) => {
     if (!reason.trim()) {
-      alert('يرجى كتابة سبب البلاغ')
+      toast.error('يرجى كتابة سبب البلاغ')
       return
     }
-    apis.lawyer
-      .banContract({ id: Number(id) })
-      .then(() => {
-        setBlockingId(null)
-        setReason('')
-        alert('تم إرسال البلاغ')
-        refresh()
-      })
+    try {
+      await apis.lawyer.banContract(Number(id))
+      setBlockingId(null)
+      setReason('')
+      toast.success('تم إرسال البلاغ')
+      refresh()
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'حدث خطأ أثناء إرسال البلاغ')
+    }
   }
 
   return (
     <div>
       <div className="mb-6 border-r-4 border-primary bg-white">
         <h1 className="px-6 py-4 text-right text-3xl font-bold text-primary">
-          عقودى المبدئية
+          حجوزاتي المبدئية
         </h1>
       </div>
 
       {loading ? (
         <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-600">
-          جاري تحميل العقود...
+          جاري تحميل الحجوزات...
         </div>
       ) : acceptedContracts.length === 0 ? (
         <div className="rounded-2xl border border-gray-200 bg-white p-10 text-center text-gray-600">
-          لا توجد عقود مقبولة حتى الآن
+          لا توجد حجوزات مقبولة حتى الآن
         </div>
       ) : (
         <div className="space-y-4">
@@ -127,12 +129,10 @@ export default function MyContractsPage() {
               <div className="mt-5 flex flex-wrap justify-start gap-3">
                 <button
                   type="button"
-                  onClick={() =>
-                    apis.lawyer.cancelContract({ id: Number(c.id) }).then(() => refresh())
-                  }
-                  className="rounded-lg border-2 border-primary bg-white px-6 py-2 font-bold text-primary transition hover:bg-primary/5"
+                  onClick={() => apis.lawyer.completeContract(Number(c.id)).then(() => refresh())}
+                  className="rounded-lg bg-green-600 px-6 py-2 font-bold text-white transition hover:bg-green-700"
                 >
-                  إلغاء
+                  إتمام / تأكيد
                 </button>
                 <button
                   type="button"
@@ -140,6 +140,15 @@ export default function MyContractsPage() {
                   className="rounded-lg bg-red-600 px-6 py-2 font-bold text-white transition hover:bg-red-700"
                 >
                   بلاغ / حظر
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    apis.lawyer.cancelContract(Number(c.id)).then(() => refresh())
+                  }
+                  className="rounded-lg border-2 border-primary bg-white px-6 py-2 font-bold text-primary transition hover:bg-primary/5"
+                >
+                  إلغاء
                 </button>
               </div>
 

@@ -57,7 +57,7 @@ export default function ContractsPage() {
                     {/* Right side - Contract info */}
                     <div className="space-y-3 text-right flex-1">
                       <h3 className="text-xl font-bold">
-                        العقد رقم: {contract.contractNumber}
+                        الحجز رقم: {contract.contractNumber}
                       </h3>
                       <p className="text-lg">المالك : {contract.owner}</p>
                       <p className="text-lg">المشتري : {contract.buyer}</p>

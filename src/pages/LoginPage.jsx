@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -13,39 +14,42 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    const res = await apis.login.login({
-      email: formData.email, password: formData.password,
-    })
+    try {
+      const res = await apis.login.login({
+        email: formData.email, password: formData.password,
+      })
 
-    const authHeader =
-      res.headers?.authorization ||
-      res.headers?.Authorization ||
-      res.headers?.AUTHORIZATION
+      const authHeader =
+        res.headers?.authorization ||
+        res.headers?.Authorization ||
+        res.headers?.AUTHORIZATION
 
-    if (typeof authHeader === 'string' && authHeader.toLowerCase().startsWith('bearer ')) {
-      localStorage.setItem('token', authHeader.slice(7).trim())
-      localStorage.setItem('name', res.data.name);
-      localStorage.setItem('email', formData.email);
-      localStorage.setItem('id', res.data.id);
-    }
+      if (typeof authHeader === 'string' && authHeader.toLowerCase().startsWith('bearer ')) {
+        localStorage.setItem('token', authHeader.slice(7).trim())
+        localStorage.setItem('name', res.data.name);
+        localStorage.setItem('email', formData.email.trim());
+        localStorage.setItem('id', res.data.id);
+      }
 
-
-    const roleRaw = res.data?.role || ''
-    const role = String(roleRaw).toLowerCase()
-    if (role === 'admin' || role === 'lawyer') {
+      const roleRaw = res.data?.role || ''
+      const role = String(roleRaw).toLowerCase()
       localStorage.setItem('role', role)
-    }
 
-    if (role === 'admin') {
-      navigate('/admin')
-      return
-    }
-    if (role === 'lawyer') {
-      navigate('/lawyer')
-      return
-    }
+      toast.success('تم تسجيل الدخول بنجاح')
 
-    navigate('/home')
+      if (role === 'admin') {
+        navigate('/admin')
+        return
+      }
+      if (role === 'lawyer') {
+        navigate('/lawyer')
+        return
+      }
+
+      navigate('/home')
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'حدث خطأ في تسجيل الدخول')
+    }
   }
 
   return (

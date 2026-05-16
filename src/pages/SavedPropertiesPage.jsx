@@ -2,6 +2,7 @@ import Header from '../components/Header'
 import { Link } from 'react-router-dom'
 import { MoreVertical } from 'lucide-react'
 import { useEffect, useMemo, useState, useRef } from 'react'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
 
 function PropertyCard({ property }) {
@@ -33,10 +34,16 @@ function PropertyCard({ property }) {
 
   const removeFromFavourit = async (e) => {
     e.preventDefault()
-    const res = await apis.savedProperties.removeFromSaved(String(property.id))
+    try {
+      const res = await apis.savedProperties.removeFromSaved(String(property.id))
 
-    if(res.status == 204)
-      alert("تمت ازالة العقار من المفضلة")
+      if(res.status == 204 || res.status == 200) {
+        toast.success("تمت ازالة العقار من المفضلة")
+        setShowMenu(false)
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "حدث خطأ أثناء الإزالة من المفضلة")
+    }
   }
 
 

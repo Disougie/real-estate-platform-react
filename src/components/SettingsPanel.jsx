@@ -1,41 +1,85 @@
-import { X, Bookmark, Building2, Home, Gift, Settings, Power } from 'lucide-react'
+import { X, Bookmark, Building2, Home, Gift, Settings, Power, FileText } from 'lucide-react'
 import { Link, replace, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
-const menuItems = [
-  {
-    icon: Bookmark,
-    label: 'العقارات المحفوظة',
-    path: '/saved-properties'
-  },
-  {
-    icon: Building2,
-    label: 'العقارات خاصتي',
-    path: '/my-properties'
-  },
-  {
-    icon: Home,
-    label: 'إضافة عقار',
-    path: '/add-property'
-  },
-  {
-    icon: Settings,
-    label: 'إعدادات الحساب',
-    path: '/account-settings'
-  },
-  {
-    icon: Power,
-    label: 'تسجيل خروج',
-    path: '/login'
-  }
-]
 
 export default function SettingsPanel({ isOpen, onClose }) {
   const navigate = useNavigate()
-
+  
+  let menuItems = [] ;
+  const role = localStorage.getItem('role');
+  if(role == 'user'){
+    menuItems = [
+      {
+        icon: Bookmark,
+        label: 'العقارات المحفوظة',
+        path: '/saved-properties'
+      },
+      {
+        icon: Building2,
+        label: 'العقارات خاصتي',
+        path: '/my-properties'
+      },
+      {
+        icon: Home,
+        label: 'إضافة عقار',
+        path: '/add-property'
+      },
+      {
+        icon: Settings,
+        label: 'إعدادات الحساب',
+        path: '/account-settings'
+      },
+      {
+        icon: Power,
+        label: 'تسجيل خروج',
+        path: '/login'
+      }
+    ]
+  }
+  else if(role == 'admin') {
+    menuItems = [
+      {
+        icon: Settings,
+        label: 'إعدادات الحساب',
+        path: '/account-settings'
+      },
+      {
+        icon: Power,
+        label: 'تسجيل خروج',
+        path: '/login'
+      }
+    ]
+  }
+  else if (role == 'lawyer') {
+    menuItems = [
+      { 
+        icon: FileText,
+        label: 'حجوزاتي المبدئية',
+        path: '/lawyer/my-contracts',
+      },
+      {
+        icon: Settings,
+        label: 'إعدادات الحساب',
+        path: '/account-settings'
+      },
+      {
+        icon: Power,
+        label: 'تسجيل خروج',
+        path: '/login'
+      }
+    ]
+  }
+  
   const handleNavigation = (path) => {
     onClose()
-    if(path == "/"){
+    if(path === "/login"){
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+      localStorage.removeItem("id");
+      toast.success('تم تسجيل الخروج بنجاح');
     }
     navigate(path)
   }

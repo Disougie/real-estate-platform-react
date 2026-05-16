@@ -14,7 +14,7 @@ function ContractCard({ contract }) {
 
         <div className="flex-1 text-right">
           <h3 className="text-xl font-extrabold text-primary">
-            العقد رقم: {contract.contractNumber}
+            الحجز رقم: {contract.contractNumber}
           </h3>
           <p className="mt-2 text-gray-700">
             <span className="font-bold">المالك:</span> {contract.owner}
@@ -81,7 +81,7 @@ export default function LawyerHomePage() {
     <div>
       <div className="mb-6 border-r-4 border-primary bg-white">
         <h1 className="px-6 py-4 text-right text-3xl font-bold text-primary">
-          عروض العقود المبدئية
+          عروض الحجوزات المبدئية
         </h1>
       </div>
 

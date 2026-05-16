@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import PropertyBackground from '/assets/PropertyBackground.png'
+import PropertyBackground from '../../assets/PropertyBackground.png'
+import Logo from '../../assets/LogoPic.png'
 
 // const heroBackground = '../assets/PropertyBackground.png';
 const featureCards = [
@@ -69,7 +70,7 @@ const featureCards = [
 function BrandLogo() {
   return (
     <div className="h-22 w-24 rounded-full border-gray-200  p-1">
-      <img src="../assets/LogoPic.png" alt="logo" className="w-[65px] h-[65px]" />
+      <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
     </div>
   )
 }
@@ -155,8 +156,8 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="mt-12 flex flex-nowrap items-center justify-center gap-5 text-xl md:text-2xl">
-            <p className="font-medium text-gray-800 ">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-5 text-xl md:text-2xl">
+            <p className="font-medium text-gray-800 w-full text-center ">
               انضم لمنصة العقارات لتتمتع بجميع هذه الميزات
             </p>
             <Link

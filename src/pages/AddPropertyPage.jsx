@@ -3,6 +3,8 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import Header from '../components/Header'
+import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import { apis } from '../api'
 
 const propertyTypes = [
@@ -70,7 +72,7 @@ export default function AddPropertyPage() {
     event.preventDefault()
 
     if (!formData.latitude || !formData.longitude) {
-      alert('يرجى تحديد موقع العقار على الخريطة')
+      toast.error('يرجى تحديد موقع العقار على الخريطة')
       return
     }
 
@@ -99,13 +101,23 @@ export default function AddPropertyPage() {
       area: formData.area,
       size: Number(formData.size || 0),
     }
-    
-    const res = await apis.properties.addPropertyAd({ propertyAdPostRequest: payload })
-    if(res.status == 201){
-      alert('تم إضافة العقار بنجاح')
-    }
-    else {
-      throw new Error("something went wrong")
+
+    try {
+      const res = await apis.properties.addPropertyAd({ ...payload })
+      if (res.status == 201 || res.status == 200) {
+        Swal.fire({
+          title: 'نجاح!',
+          text: 'تم إضافة العقار بنجاح',
+          icon: 'success',
+          confirmButtonColor: '#1e3a8a'
+        })
+      }
+      else {
+        throw new Error("something went wrong")
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'حدث خطأ أثناء إضافة العقار'
+      toast.error(errorMsg)
     }
   }
 

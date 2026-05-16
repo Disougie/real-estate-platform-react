@@ -1647,7 +1647,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/PropertyBriefResponse"
+                                        "$ref": "#/components/schemas/PropertyMapResponse"
                                     }
                                 }
                             }
@@ -2577,6 +2577,10 @@
                     },
                     "role": {
                         "type": "string"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
                     }
                 }
             },
@@ -2878,6 +2882,41 @@
                     },
                     "imageUrl": {
                         "type": "string"
+                    }
+                }
+            },
+            "PropertyMapResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "RENT",
+                            "PURCHASE",
+                            "COMMERCIAL_RENT",
+                            "COMMERCIAL_PURCHASE",
+                            "STUDENT"
+                        ]
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "position": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
                     }
                 }
             },

@@ -422,7 +422,7 @@ const { status, data } = await apiInstance.ratePropertyAd(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **searchByCoordinates**
-> Array<PropertyBriefResponse> searchByCoordinates()
+> Array<PropertyMapResponse> searchByCoordinates()
 
 
 ### Example
@@ -458,7 +458,7 @@ const { status, data } = await apiInstance.searchByCoordinates(
 
 ### Return type
 
-**Array<PropertyBriefResponse>**
+**Array<PropertyMapResponse>**
 
 ### Authorization
 

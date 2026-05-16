@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate()
@@ -9,12 +10,17 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-   const res = await apis.forgotPassword.forgotPassword({
-    email: email,
-   });
-   if(res.status == 200)
-    alert(res.data.message);
-    navigate('/login');
+    try {
+      const res = await apis.forgotPassword.forgotPassword({
+        email: email,
+      });
+      if(res.status == 200 || res.status == 201) {
+        toast.success(res.data.message || 'تم إرسال الرابط بنجاح');
+      }
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'حدث خطأ أثناء الإرسال');
+    }
   }
 
   return (

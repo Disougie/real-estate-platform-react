@@ -49,6 +49,7 @@ docs/PropertyBriefResponse.md
 docs/PropertyControllerApi.md
 docs/PropertyData.md
 docs/PropertyDetailedResponse.md
+docs/PropertyMapResponse.md
 docs/PropertyPatchRequest.md
 docs/RecommendationControllerApi.md
 docs/RegistrationControllerApi.md

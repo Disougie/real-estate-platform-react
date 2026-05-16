@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { apis } from '../../api'
+import { Search } from 'lucide-react'
 
 const TABS = [
   { key: 'users', label: 'المستخدمين' },
@@ -24,6 +25,7 @@ function StatusBadge({ status }) {
     PENDING_PROCESSING: 'bg-amber-100 text-amber-700',
     COMPLETED: 'bg-emerald-100 text-emerald-700',
     BANNED: 'bg-red-100 text-red-700',
+    محذوف: 'bg-red-100 text-red-700',
   }
 
   return (
@@ -241,23 +243,23 @@ export default function AdminDashboardHomePage() {
     const call =
       activeTab === 'users'
         ? hasQuery
-          ? apis.admin.searchUser({ text, page, size: PAGE_SIZE })
-          : apis.admin.getUsers({ page, size: PAGE_SIZE })
+          ? apis.admin.searchUser(text, page, PAGE_SIZE)
+          : apis.admin.getUsers(page, PAGE_SIZE)
         : activeTab === 'lawyers'
           ? hasQuery
-            ? apis.admin.searchLawyer({ text, page, size: PAGE_SIZE })
-            : apis.admin.getLawyers({ page, size: PAGE_SIZE })
+            ? apis.admin.searchLawyer(text, page, PAGE_SIZE)
+            : apis.admin.getLawyers(page, PAGE_SIZE)
           : activeTab === 'admins'
             ? hasQuery
-              ? apis.admin.searchAdmin({ text, page, size: PAGE_SIZE })
-              : apis.admin.getAdmins({ page, size: PAGE_SIZE })
+              ? apis.admin.searchAdmin(text, page, PAGE_SIZE)
+              : apis.admin.getAdmins(page, PAGE_SIZE)
             : activeTab === 'properties'
               ? hasQuery
-                ? apis.admin.searchProperty({ text, page, size: PAGE_SIZE })
-                : apis.admin.getProperties1({ page, size: PAGE_SIZE })
+                ? apis.admin.searchProperty(text, page, PAGE_SIZE)
+                : apis.admin.getProperties1(page, PAGE_SIZE)
               : hasQuery
-                ? apis.admin.searchBlog({ text, page, size: PAGE_SIZE })
-                : apis.admin.getBlogs({ page, size: PAGE_SIZE })
+                ? apis.admin.searchBlog(text, page, PAGE_SIZE)
+                : apis.admin.getBlogs(page, PAGE_SIZE)
 
     call
       .then((res) => setPageData(res.data || { content: [], totalPages: 0, totalElements: 0 }))
@@ -303,24 +305,24 @@ export default function AdminDashboardHomePage() {
       id: u.id,
       name: u.name || '—',
       email: u.email || '—',
-      status: u.enabled === false ? 'معلق' : 'نشط',
+      status: u.deletedAt != null ? 'محذوف' : u.enabled === false ? 'معلق' : 'نشط',
     }))
   }, [activeTab, pageData])
 
   const handleDelete = (id) => {
     const doDelete =
       activeTab === 'properties'
-        ? apis.admin.deleteProperty({ id: String(id) })
+        ? apis.admin.deleteProperty(String(id))
         : activeTab === 'blogs'
-          ? apis.admin.deleteBlog({ id: Number(id) })
-          : apis.admin._delete({ id: Number(id) })
+          ? apis.admin.deleteBlog(Number(id))
+          : apis.admin._delete(Number(id))
 
     doDelete.then(() => fetchTab())
   }
 
-  const handleAdd = (mode, form) => {
+  const handleAdd = async (mode, form) => {
     if (mode === 'blog') {
-      return apis.admin.addBlog({ blogRequest: { title: form.title, content: form.content } }).then(() => {
+      return await apis.admin.addBlog({ title: form.title, content: form.content}).then(() => {
         setActiveTab('blogs')
         setQuery('')
         setPage(0)
@@ -330,7 +332,7 @@ export default function AdminDashboardHomePage() {
 
     const registrationRequest = {
       name: form.name,
-      phone: form.phone || undefined,
+      phone: form.phone || null,
       email: form.email,
       password: form.password,
       confirm_password: form.password,
@@ -338,10 +340,10 @@ export default function AdminDashboardHomePage() {
 
     const call =
       mode === 'user'
-        ? apis.admin.registerUser({ registrationRequest })
+        ? apis.admin.registerUser({ ...registrationRequest })
         : mode === 'lawyer'
-          ? apis.admin.registerLawyer({ registrationRequest })
-          : apis.admin.registerAdmin({ registrationRequest })
+          ? apis.admin.registerLawyer({ ...registrationRequest })
+          : apis.admin.registerAdmin({ ...registrationRequest })
 
     return call.then(() => {
       const nextTab = mode === 'user' ? 'users' : mode === 'lawyer' ? 'lawyers' : 'admins'
@@ -356,6 +358,9 @@ export default function AdminDashboardHomePage() {
     <div className="space-y-5">
       <div className="border-r-4 border-primary bg-white">
         <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4">
+          <h1 className="text-right text-3xl font-bold text-primary">
+            لوحة المدير
+          </h1>
           <button
             type="button"
             onClick={() => setAddOpen(true)}
@@ -363,9 +368,6 @@ export default function AdminDashboardHomePage() {
           >
             إضافة
           </button>
-          <h1 className="text-right text-3xl font-bold text-primary">
-            لوحة المدير
-          </h1>
         </div>
       </div>
 
@@ -387,13 +389,16 @@ export default function AdminDashboardHomePage() {
 
       {/* Search */}
       <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-[50%]">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="بحث..."
             className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-right outline-none focus:ring-2 focus:ring-accent"
           />
+          {/* <button className='bg-primary p-4' onClick={fetchTab}>
+            <Search className="text-white" size={20} />
+          </button> */}
           <span className="rounded-lg bg-gray-100 px-3 py-2 text-sm font-bold text-gray-700">
             {pageData.totalElements || 0}
           </span>

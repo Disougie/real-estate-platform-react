@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { apis } from '../api'
-import Logo from '/assets/LogoPic.png'
+import Logo from '../../assets/LogoPic.png'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -17,32 +18,41 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (formData.password !== formData.confirmPassword) {
-      alert('كلمة السر غير متطابقة')
+      toast.error('كلمة السر غير متطابقة')
       return
     }
-    const res = await apis.registration.register({
-      name: formData.name,
-      phone: formData.phone,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    })
-    
-    if(res.status == 200) {
-      navigate('/login')
-    }
-    if(res.status == 400){
-      setError(res.data.message);
-    }
-    else {
-      throw Error("something went wrong");
+
+    try {
+      const res = await apis.registration.register({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      })
+
+      if (res.status == 200 || res.status == 201) {
+        toast.success('تم إنشاء الحساب بنجاح')
+        navigate('/login')
+      }
+      else if (res.status == 400) {
+        setError(res.data.message);
+        toast.error(res.data.message);
+      }
+      else {
+        throw Error("something went wrong");
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'حدث خطأ أثناء إنشاء الحساب'
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   }
 
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
       <img src={Logo} alt="logo" className="w-48 h-48 mb-12" />
-      
+
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* Name Field */}
         <div className="flex items-center gap-4">
@@ -130,8 +140,8 @@ export default function RegisterPage() {
 
         {/* Back to Login Link */}
         <div className="flex justify-center pt-2">
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             className="text-white hover:text-accent transition-colors"
           >
             لديك حساب؟ تسجيل دخول

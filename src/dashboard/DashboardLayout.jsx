@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { Menu, X, LogOut, Settings, LayoutDashboard, FileText } from 'lucide-react'
+import toast from 'react-hot-toast'
 import { clearCurrentRole } from './useRole'
+import Header from '../components/Header'
 
 function BrandLogo() {
   return (
@@ -62,13 +64,20 @@ export default function DashboardLayout({ role }) {
 
   const handleLogout = () => {
     clearCurrentRole()
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("id");
+    toast.success('تم تسجيل الخروج بنجاح')
     navigate('/login')
   }
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       {/* Navbar */}
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-primary">
+      <Header/>
+      {/* <header className="sticky top-0 z-30 border-b border-white/10 bg-primary">
         <div className="flex items-center justify-between px-4 py-3 md:px-6">
           <button
             type="button"
@@ -83,7 +92,7 @@ export default function DashboardLayout({ role }) {
 
           <div className="w-11" />
         </div>
-      </header>
+      </header> */}
 
       <div className="mx-auto flex max-w-7xl">
         {/* Sidebar overlay */}
@@ -95,7 +104,7 @@ export default function DashboardLayout({ role }) {
         />
 
         {/* Sidebar */}
-        <aside
+        {/* <aside
           className={`fixed right-0 top-0 z-50 h-full w-80 max-w-[90vw] transform bg-white shadow-2xl transition-transform md:sticky md:top-[57px] md:h-[calc(100vh-57px)] md:translate-x-0 md:shadow-none ${
             sidebarOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
@@ -144,7 +153,7 @@ export default function DashboardLayout({ role }) {
               نسخة تجريبية — Mock Data
             </div>
           </div>
-        </aside>
+        </aside> */}
 
         {/* Content */}
         <main className="w-full flex-1 px-4 py-6 md:px-6">

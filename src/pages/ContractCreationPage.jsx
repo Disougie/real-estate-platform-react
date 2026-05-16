@@ -1,6 +1,8 @@
 import Header from '../components/Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import { apis } from '../api'
 
 // Section Header Component
@@ -70,24 +72,32 @@ export default function ContractDetailsPage() {
       .finally(() => {
         if (alive) setLoading(false)
       })
-
+    
     return () => {
       alive = false
     }
   }, [propertyId])
 
   const handleConfirm = async () => {
-    const res = await apis.contracts.createInitialContract({
-      property_id : propertyId,
-      rentDuration
-    });
-    if(res.status == 201) {
-      alert("contract created successfuly")
-      navigate('/contracts')
-    }
-    else {
-      alert("something went wrong")
-      navigate("/home")
+    try {
+      const res = await apis.contracts.createInitialContract({
+        property_id : propertyId,
+        rentDuration
+      });
+      if(res.status == 200 || res.status == 201) {
+        await Swal.fire({
+          title: 'نجاح!',
+          text: 'تم إنشاء العقد بنجاح',
+          icon: 'success',
+          confirmButtonColor: '#1e3a8a'
+        });
+        navigate('/contracts')
+      }
+      else {
+        throw new Error("something went wrong")
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "حدث خطأ أثناء إنشاء العقد")
     }
   }
 
@@ -123,7 +133,7 @@ export default function ContractDetailsPage() {
             <div className="bg-white">
               <FieldRow
                 fields={[
-                  { label: 'الموقع:', value: property?.location?.city || '-' },
+                  { label: 'الموقع:', value: property.city + ", " +  property.area || '-' },
                   { label: 'الغرض من إستخدام العقار:', value: property.type },
                 ]}
               />

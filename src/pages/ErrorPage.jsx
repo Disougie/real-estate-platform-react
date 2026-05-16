@@ -79,7 +79,7 @@ export default function ErrorPage() {
                 تسجيل دخول
               </Link>
               <Link
-                to={localStorage.getItem('token') ? '/home' : '/login'}
+                to={localStorage.getItem('token') ? localStorage.getItem('role') == 'user' ? "/home" : localStorage.getItem('role') == 'admin' ? "/admin" : "/lawyer" : '/login'}
                 className="rounded-lg border border-gray-300 bg-white px-8 py-3 font-bold text-gray-700 transition hover:bg-gray-100"
               >
                 الصفحة الرئيسية

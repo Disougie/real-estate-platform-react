@@ -127,6 +127,7 @@ export interface LoginRequest {
 export interface LoginResponse {
     'name'?: string;
     'role'?: string;
+    'id'?: number;
 }
 export interface NotificationResponse {
     'message'?: string;
@@ -312,6 +313,25 @@ export const PropertyDetailedResponseStatusEnum = {
 } as const;
 
 export type PropertyDetailedResponseStatusEnum = typeof PropertyDetailedResponseStatusEnum[keyof typeof PropertyDetailedResponseStatusEnum];
+
+export interface PropertyMapResponse {
+    'id'?: string;
+    'title'?: string;
+    'location'?: string;
+    'type'?: PropertyMapResponseTypeEnum;
+    'price'?: number;
+    'position'?: Array<number>;
+}
+
+export const PropertyMapResponseTypeEnum = {
+    Rent: 'RENT',
+    Purchase: 'PURCHASE',
+    CommercialRent: 'COMMERCIAL_RENT',
+    CommercialPurchase: 'COMMERCIAL_PURCHASE',
+    Student: 'STUDENT',
+} as const;
+
+export type PropertyMapResponseTypeEnum = typeof PropertyMapResponseTypeEnum[keyof typeof PropertyMapResponseTypeEnum];
 
 export interface PropertyPatchRequest {
     'title'?: string;
@@ -4385,7 +4405,7 @@ export const PropertyControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchByCoordinates(lng: number, lat: number, maxDistance?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PropertyBriefResponse>>> {
+        async searchByCoordinates(lng: number, lat: number, maxDistance?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PropertyMapResponse>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.searchByCoordinates(lng, lat, maxDistance, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PropertyControllerApi.searchByCoordinates']?.[localVarOperationServerIndex]?.url;
@@ -4520,7 +4540,7 @@ export const PropertyControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchByCoordinates(lng: number, lat: number, maxDistance?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<PropertyBriefResponse>> {
+        searchByCoordinates(lng: number, lat: number, maxDistance?: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<PropertyMapResponse>> {
             return localVarFp.searchByCoordinates(lng, lat, maxDistance, options).then((request) => request(axios, basePath));
         },
         /**
