@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { apis } from '../api'
 import PropertyCard from './PropertyCard'
-import PropertyDefaultImage from '../../assets/property default image.PNG'
+import PropertyDefaultImage from '../../assets/PropertyDefaultImage.png'
 
-export default function PropertyGrid({loading, data}) {
+export default function PropertyGrid({ loading, data }) {
   // const [page, setPage] = useState(0)
   // const [size] = useState(12)
   // const [loading, setLoading] = useState(true)

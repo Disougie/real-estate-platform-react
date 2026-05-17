@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Header from '../components/Header'
 import { apis } from '../api'
-import ReservationIcon from '/assets/icons-booking.png'
+import BookingIcon from '../../assets/BookingIcon.png'
 
 function PropertyDetails() {
   const { id } = useParams()
@@ -265,7 +265,7 @@ function PropertyDetails() {
                 onClick={() => handleReservation(id)}
               >
                 طلب الحجز
-                <img src={ReservationIcon} alt="" className='w-[30px]' />
+                <img src={BookingIcon} alt="" className='w-[30px]' />
               </button>
             </div>
           </>

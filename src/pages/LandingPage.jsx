@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import PropertyBackground from '../../assets/PropertyBackground.png'
-import Logo from '../../assets/LogoPic.png'
+import LogoPic from '../../assets/LogoPic.png'
 
 // const heroBackground = '../assets/PropertyBackground.png';
 const featureCards = [
@@ -67,10 +67,10 @@ const featureCards = [
   },
 ]
 
-function BrandLogo() {
+function BrandLogoPic() {
   return (
     <div className="h-22 w-24 rounded-full border-gray-200  p-1">
-      <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
+      <img src={LogoPic} alt="logoPic" className="w-[65px] h-[65px]" />
     </div>
   )
 }
@@ -113,7 +113,7 @@ export default function LandingPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-6xl">
           <div className="mb-16 flex justify-start md:mb-20">
-            <BrandLogo />
+            <BrandLogoPic />
           </div>
 
           <div className="mx-auto max-w-3xl text-center text-white">
