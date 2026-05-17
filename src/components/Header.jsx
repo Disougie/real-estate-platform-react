@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu } from 'lucide-react'
+import { Menu, Map, FileText, Bell, Newspaper } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SettingsPanel from './SettingsPanel'
 import Logo from '../../assets/LogoPic.png'
@@ -7,69 +7,82 @@ import Logo from '../../assets/LogoPic.png'
 
 export default function Header({ activeNav }) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  
+
   const role = localStorage.getItem('role');
-  const navItems  = (role != 'user') ? [] : [
-    { label: 'بحث الخرائط', path: '/map-search' },
-    { label: 'الحجوزات المبدئية', path: '/contracts' },
-    { label: 'الاشعارات', path: '/notifications' },
-    { label: 'المدونة', path: '/blogs' },
+  const navItems = (role != 'user') ? [] : [
+    { label: 'بحث الخرائط', path: '/map-search', icon: Map },
+    { label: 'الحجوزات المبدئية', path: '/contracts', icon: FileText },
+    { label: 'الاشعارات', path: '/notifications', icon: Bell },
+    { label: 'المدونة', path: '/blogs', icon: Newspaper },
   ]
-  
+
   return (
     <>
       <header className="bg-primary text-white">
         <div className="flex items-center justify-between px-6 py-3">
-          {/* Hamburger on desktop */}
-          <button 
-            className="hidden md:block text-white hover:text-accent transition-colors"
+
+          {/* Settings/Hamburger Menu (Always visible) */}
+          <button
+            className="p-2 text-white hover:text-accent transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
             onClick={() => setIsSettingsOpen(true)}
+            aria-label="Open Menu"
           >
             <Menu size={28} />
           </button>
-          
 
-          {/* Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item, index) => (
               <Link
                 key={index}
                 to={item.path}
-                className={`transition-colors text-lg font-medium ${
-                  activeNav === item.label 
-                    ? 'text-accent' 
-                    : 'text-white hover:text-accent'
-                }`}
+                className={`transition-colors text-lg font-medium ${activeNav === item.label
+                  ? 'text-accent'
+                  : 'text-white hover:text-accent'
+                  }`}
               >
                 {item.label}
               </Link>
             ))}
           </nav>
 
-          {/* Logo */}
-          <div className="flex items-center gap-4">
-            <Link to={localStorage.getItem('role') == 'user' ? "/home" : localStorage.getItem('role') == 'admin' ? "/admin" : "/lawyer"}>
-            {/* <Logo className="w-[65px] h-[65px]" /> */}
-            <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
-            </Link>
+          {/* Right Section: Mobile Icons & Settings/Hamburger */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Mobile Icon Navigation */}
+            <nav className="flex md:hidden items-center gap-1">
+              {navItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={index}
+                    to={item.path}
+                    title={item.label}
+                    className={`p-2 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] ${activeNav === item.label
+                      ? 'text-accent'
+                      : 'text-white hover:text-accent'
+                      }`}
+                  >
+                    <Icon size={24} />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Logo */}
+            <div className="flex items-center gap-4">
+              <Link to={role == 'user' ? "/home" : role == 'admin' ? "/admin" : "/lawyer"}>
+                <img src={Logo} alt="logo" className="w-[65px] h-[65px]" />
+              </Link>
+            </div>
           </div>
 
-          {/* Mobile Menu */}
-          <button 
-            className="md:hidden text-white"
-            onClick={() => setIsSettingsOpen(true)}
-          >
-            <Menu size={28} />
-          </button>
-
-          
         </div>
       </header>
 
       {/* Settings Panel */}
-      <SettingsPanel 
-        isOpen={isSettingsOpen} 
-        onClose={() => setIsSettingsOpen(false)} 
+      <SettingsPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </>
   )

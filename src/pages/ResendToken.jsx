@@ -1,34 +1,49 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
 import { apis } from '../api'
 import Logo from '../../assets/LogoPic.png'
+import toast from 'react-hot-toast'
 import Swal from 'sweetalert2'
 
-export default function ForgotPasswordPage() {
+export default function ResendTokenPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await apis.forgotPassword.forgotPassword({
+      const res = await apis.tokens.resendToken({
         email: email,
-      });
-      if (res.status == 200 || res.status == 201) {
+      })
+      console.log(res)
+      if (res.status == 204 || res.status == 200 || res.status == 201) {
         Swal.fire({
-          title: 'تم الطلب بنجاح',
-          text: 'ستصلك رسالة على بريدك الالكتروني',
+          title: 'تم طلب بنجاح',
+          text: 'ستصلك رسالة تأكيد في بريدك الالكتروني',
           icon: 'success',
           confirmButtonText: 'حسنا',
           cancelButtonColor: '#0a0d8c',
         })
-        // toast.success(res.data.message || 'تم إرسال الرابط بنجاح');
+        navigate('/login')
       }
-      navigate('/login');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'حدث خطأ أثناء الإرسال');
+      console.log(error)
+      toast.error(error.response?.data?.message || 'حدث خطأ في إعادة ارسال رمز التأكيد')
     }
+    // const res = await apis.changeInfo.changeEmail({ newEmail: email });
+    // if (res.status == 204) {
+    //   Swal.fire({
+    //     title: 'تم طلب التغيير بنجاح',
+    //     text: 'تم ارسال رمز التاكيد الطلب من بريدك الالكتروني الحالي ثم تأكيد البريد الالكتروني الجديد',
+    //     icon: 'success',
+    //     confirmButtonText: 'حسنا',
+    //     cancelButtonColor: '#0a0d8c',
+    //   })
+    //   navigate('/account-settings')
+    // }
+    // else {
+    //   throw new Error("something went wrong");
+    // }
   }
 
   return (
@@ -36,17 +51,17 @@ export default function ForgotPasswordPage() {
       <img src={Logo} alt="logo" className="w-48 h-48 mb-12" />
 
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
-        {/* Email Field */}
+        {/* New Email Field */}
         <div className="flex items-center gap-4">
-          <label className="text-white text-xl font-medium min-w-[140px] text-right">
-            البريد الاكتروني
+          <label className="text-white text-xl font-medium min-w-[160px] text-right">
+            البريد الالكتروني الجديد
           </label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="flex-1 bg-gray-200 text-gray-600 px-4 py-3 text-right focus:outline-none focus:ring-2 focus:ring-accent"
-            placeholder="ادخل البريد ليصلك فيه رمز إعادة التعيين"
+            placeholder="ادخل البريد الالكتروني الجديد"
             required
           />
         </div>
@@ -57,11 +72,11 @@ export default function ForgotPasswordPage() {
             type="submit"
             className="bg-gray-200 text-primary font-bold px-16 py-3 hover:bg-gray-300 transition-colors"
           >
-            ارسال
+            تأكيد
           </button>
         </div>
 
-        {/* Back to Login Link */}
+        {/* Back Link */}
         <div className="flex justify-center pt-2">
           <Link
             to="/login"

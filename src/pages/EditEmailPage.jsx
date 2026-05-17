@@ -7,10 +7,17 @@ export default function EditEmailPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await apis.changeInfo.changeEmail({newEmail: email});
-    if( res.status == 204){
+    const res = await apis.changeInfo.changeEmail({ newEmail: email });
+    if (res.status == 204) {
+      Swal.fire({
+        title: 'تم طلب التغيير بنجاح',
+        text: 'تم ارسال رمز التاكيد الطلب من بريدك الالكتروني الحالي ثم تأكيد البريد الالكتروني الجديد',
+        icon: 'success',
+        confirmButtonText: 'حسنا',
+        cancelButtonColor: '#0a0d8c',
+      })
       navigate('/account-settings')
     }
     else {
@@ -21,7 +28,7 @@ export default function EditEmailPage() {
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
       <img src={Logo} alt="logo" className="w-48 h-48 mb-12" />
-      
+
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* New Email Field */}
         <div className="flex items-center gap-4">
@@ -50,8 +57,8 @@ export default function EditEmailPage() {
 
         {/* Back Link */}
         <div className="flex justify-center pt-2">
-          <Link 
-            to="/account-settings" 
+          <Link
+            to="/account-settings"
             className="text-white hover:text-accent transition-colors"
           >
             العودة لإعدادات الحساب

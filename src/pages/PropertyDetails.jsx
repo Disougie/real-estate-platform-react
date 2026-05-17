@@ -32,7 +32,7 @@ function PropertyDetails() {
 
   useEffect(() => {
     apis.savedProperties.getMySavedProperties().then(res => {
-      if(res.data.some(p => p.id == id)){
+      if (res.data.some(p => p.id == id)) {
         setIsFavorite(true);
       }
       else {
@@ -50,14 +50,14 @@ function PropertyDetails() {
   }, [property])
 
   const handleAddToFavotrit = async () => {
-    if(!isFavorite){
-      const res = await apis.savedProperties.saveProperty({property_id: property.id});
-      if(res.status == 201) 
+    if (!isFavorite) {
+      const res = await apis.savedProperties.saveProperty({ property_id: property.id });
+      if (res.status == 201)
         setIsFavorite(true);
     }
     else {
-      const res = await apis.savedProperties.removeFromSaved({property_id: property.id});
-      if(res.status == 204){
+      const res = await apis.savedProperties.removeFromSaved({ property_id: property.id });
+      if (res.status == 204) {
         setIsFavorite(false);
       }
     }
@@ -234,13 +234,13 @@ function PropertyDetails() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 justify-center">
-              <button className="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <div className="flex flex-wrap gap-4 justify-center">
+              {/* <button className="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                 اتصال
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M3 5a2 2 0 0 1 2-2h3.28a1 1 0 0 1 .948.684l1.498 4.493a1 1 0 0 1-.502 1.21l-2.257 1.13a11.042 11.042 0 0 0 5.516 5.516l1.13-2.257a1 1 0 0 1 1.21-.502l4.493 1.498a1 1 0 0 1 .684.949V19a2 2 0 0 1-2 2h-1C9.716 21 3 14.284 3 6V5z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </button>
+              </button> */}
 
               <button
                 onClick={handleAddToFavotrit}
@@ -260,7 +260,7 @@ function PropertyDetails() {
                 </svg>
               </button>
 
-              <button 
+              <button
                 className="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 onClick={() => handleReservation(id)}
               >

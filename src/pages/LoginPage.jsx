@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     try {
       const res = await apis.login.login({
         email: formData.email, password: formData.password,
@@ -52,10 +52,23 @@ export default function LoginPage() {
     }
   }
 
+  // const handleResendToken = async () => {
+  //   try {
+  //     const res = await apis.resendToken.resendToken({
+  //       email: formData.email,
+  //     })
+  //     if (res.status == 200) {
+  //       toast.success('تم إعادة ارسال رمز التأكيد بنجاح')
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message || 'حدث خطأ في إعادة ارسال رمز التأكيد')
+  //   }
+  // }
+
   return (
     <div className="min-h-screen bg-primary flex flex-col items-center justify-center px-4 py-12">
       <img src={Logo} alt="logo" className="w-48 h-48 mb-12" />
-      
+
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
         {/* Email Field */}
         <div className="flex items-center gap-4">
@@ -97,18 +110,24 @@ export default function LoginPage() {
         </div>
 
         {/* Links */}
-        <div className="flex justify-center gap-8 pt-4">
-          <Link 
-            to="/forgot-password" 
+        <div className="flex flex-wrap justify-center gap-8 pt-4">
+          <Link
+            to="/forgot-password"
             className="text-white hover:text-accent transition-colors"
           >
             نسيت كلمة المرور؟
           </Link>
-          <Link 
-            to="/register" 
+          <Link
+            to="/register"
             className="text-white hover:text-accent transition-colors"
           >
             تسجيل حساب جديد
+          </Link>
+          <Link
+            className="text-white hover:text-accent transition-colors"
+            to="/resend-token"
+          >
+            إعادة ارسال رمز التأكيد
           </Link>
         </div>
       </form>

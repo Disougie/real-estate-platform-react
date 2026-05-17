@@ -9,7 +9,7 @@ import SavedPropertiesPage from './pages/SavedPropertiesPage'
 import ContractsPage from './pages/ContractsPage'
 import ContractDetailsPage from './pages/ContractDetailsPage'
 import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage' 
+import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import AccountSettingsPage from './pages/AccountSettingsPage'
@@ -28,6 +28,8 @@ import AdminDashboardLayout from './pages/admin/AdminDashboardLayout'
 import AdminDashboardHomePage from './pages/admin/AdminDashboardHomePage'
 import ContractCreationPage from './pages/ContractCreationPage'
 import EditPasswordPage from './pages/EditPasswordPage'
+import OwnerPropertyDetails from './pages/OwnerPropertyDetails'
+import ResendTokenPage from './pages/ResendToken'
 
 function App() {
   return (
@@ -35,55 +37,57 @@ function App() {
       <Toaster position="top-center" />
       <BrowserRouter>
         <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/property/:id" element={<PropertyDetails />} />
-        <Route path="/map-search" element={<MapSearchPage />} />
-        <Route path="/my-properties" element={<MyPropertiesPage />} />
-        <Route path="/saved-properties" element={<SavedPropertiesPage />} />
-        <Route path="/contracts" element={<ContractsPage />} />
-        <Route path="/contracts/create/:propertyId" element={<ContractCreationPage />} />
-        <Route path="/contracts/:id" element={<ContractDetailsPage />} />
-        <Route path="/account-settings" element={<AccountSettingsPage />} />
-        <Route path="/edit-email" element={<EditEmailPage />} />
-        <Route path="/edit-phone" element={<EditPhonePage />} />
-        <Route path="/edit-password" element={<EditPasswordPage />} />
-        <Route path="/add-property" element={<AddPropertyPage />} />
-        <Route path="/notifications" element={<NotificationPage />} />
-        <Route path="/blogs" element={<BlogPage />} />
-        <Route path="/error" element={<ErrorPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/map-search" element={<MapSearchPage />} />
+          <Route path="/my-properties" element={<MyPropertiesPage />} />
+          <Route path="/saved-properties" element={<SavedPropertiesPage />} />
+          <Route path="/contracts" element={<ContractsPage />} />
+          <Route path="/contracts/create/:propertyId" element={<ContractCreationPage />} />
+          <Route path="/contracts/:id" element={<ContractDetailsPage />} />
+          <Route path="/account-settings" element={<AccountSettingsPage />} />
+          <Route path="/edit-email" element={<EditEmailPage />} />
+          <Route path="/edit-phone" element={<EditPhonePage />} />
+          <Route path="/edit-password" element={<EditPasswordPage />} />
+          <Route path="/add-property" element={<AddPropertyPage />} />
+          <Route path="/notifications" element={<NotificationPage />} />
+          <Route path="/blogs" element={<BlogPage />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="/owner-property-details/:id" element={<OwnerPropertyDetails />} />
+          <Route path='/resend-token' element={<ResendTokenPage />} />
 
-        {/* Lawyer dashboard */}
-        <Route
-          path="/lawyer"
-          element={
-            // <RoleGuard allowedRoles={['lawyer']}>
-            <LawyerDashboardLayout />
-            // </RoleGuard>
-          }
-        >
-          <Route index element={<LawyerHomePage />} />
-          <Route path="contracts/:id" element={<LawyerContractDetailsPage />} />
-          <Route path="my-contracts" element={<MyContractsPage />} />
-        </Route>
+          {/* Lawyer dashboard */}
+          <Route
+            path="/lawyer"
+            element={
+              // <RoleGuard allowedRoles={['lawyer']}>
+              <LawyerDashboardLayout />
+              // </RoleGuard>
+            }
+          >
+            <Route index element={<LawyerHomePage />} />
+            <Route path="contracts/:id" element={<LawyerContractDetailsPage />} />
+            <Route path="my-contracts" element={<MyContractsPage />} />
+          </Route>
 
-        {/* Admin dashboard */}
-        <Route
-          path="/admin"
-          element={
-            // <RoleGuard allowedRoles={['admin']}>
-            <AdminDashboardLayout />
-            // </RoleGuard>
-          }
-        >
-          <Route index element={<AdminDashboardHomePage />} />
-        </Route>
-        
-        <Route path="*" element={<ErrorPage />} />
+          {/* Admin dashboard */}
+          <Route
+            path="/admin"
+            element={
+              // <RoleGuard allowedRoles={['admin']}>
+              <AdminDashboardLayout />
+              // </RoleGuard>
+            }
+          >
+            <Route index element={<AdminDashboardHomePage />} />
+          </Route>
+
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </>

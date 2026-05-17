@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { apis } from '../api'
 import Logo from '../../assets/LogoPic.png'
+import Swal from 'sweetalert2'
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -28,11 +29,18 @@ export default function RegisterPage() {
         phone: formData.phone,
         email: formData.email,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        confirm_password: formData.confirmPassword,
       })
 
       if (res.status == 200 || res.status == 201) {
-        toast.success('تم إنشاء الحساب بنجاح')
+        Swal.fire({
+          title: 'تم إنشاء الحساب بنجاح',
+          text: 'الان عليك تأكيد بريدك الالكتروني لتتمكن من تسجيل الدخول',
+          icon: 'success',
+          confirmButtonText: 'حسنا',
+          cancelButtonColor: '#0a0d8c',
+        })
+        // toast.success('تم إنشاء الحساب بنجاح')
         navigate('/login')
       }
       else if (res.status == 400) {

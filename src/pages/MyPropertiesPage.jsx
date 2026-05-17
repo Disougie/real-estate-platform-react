@@ -6,7 +6,7 @@ import { apis } from '../api'
 
 function PropertyCard({ property }) {
   return (
-    <Link to={`/property/${property.id}`} className="block">
+    <Link to={`/owner-property-details//${property.id}`} className="block">
       <div className="bg-white border-2 border-primary rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
         <div className="relative h-40 overflow-hidden">
           <img
@@ -73,7 +73,7 @@ export default function MyPropertiesPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      
+
       <main className="container mx-auto px-6 py-8">
         {/* Page Title */}
         <div className="bg-white rounded-lg mb-8 border-r-4 border-primary">
@@ -103,7 +103,7 @@ export default function MyPropertiesPage() {
               </svg>
             </div>
             <p className="text-gray-500 text-lg">لا توجد عقارات مضافة</p>
-            <Link 
+            <Link
               to="/add-property"
               className="inline-block mt-4 bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
             >
