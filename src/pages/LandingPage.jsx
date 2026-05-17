@@ -9,61 +9,64 @@ const featureCards = [
     description:
       'وفر مالك واحفظه من الضياع عن طريق استخدام الوسطاء وارفع إعلان عقارك الان على المنصة.',
     tone: 'gold',
-    icon: (
-      <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.8"
-          d="M12 8c-2.5 0-4.5 2-4.5 4.5S9.5 17 12 17s4.5-2 4.5-4.5S14.5 8 12 8z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.8"
-          d="M9 4h6m-6 16h6M5 8l2 12m12-12-2 12"
-        />
-      </svg>
-    ),
+    icon: '/MoneyIcon.png',
+    // (
+    //   <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       strokeWidth="1.8"
+    //       d="M12 8c-2.5 0-4.5 2-4.5 4.5S9.5 17 12 17s4.5-2 4.5-4.5S14.5 8 12 8z"
+    //     />
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       strokeWidth="1.8"
+    //       d="M9 4h6m-6 16h6M5 8l2 12m12-12-2 12"
+    //     />
+    //   </svg>
+    // ),
   },
   {
     title: 'كسب الوقت',
     description:
       'بدلا من تضيع الوقت في البحث عن عقار مناسب يمكنك كسب الوقت وإيجاد العقار المناسب بسرعة.',
     tone: 'blue',
-    icon: (
-      <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <circle cx="12" cy="12" r="8" strokeWidth="1.8" />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.8"
-          d="M12 8v4l3 2M7 3l2 2m6-2-2 2"
-        />
-      </svg>
-    ),
+    icon: '/TimeIcon.png',
+    // (
+    //   <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //     <circle cx="12" cy="12" r="8" strokeWidth="1.8" />
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       strokeWidth="1.8"
+    //       d="M12 8v4l3 2M7 3l2 2m6-2-2 2"
+    //     />
+    //   </svg>
+    // ),
   },
   {
     title: 'الموثوقية',
     description:
       'اعلى درجة موثوقية مع خدمة المحاميين لضمان الحصول على خدمة امنة ومتكاملة.',
     tone: 'gold',
-    icon: (
-      <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.8"
-          d="M12 3 4.5 6v6.5c0 4.2 3 8 7.5 8.5 4.5-.5 7.5-4.3 7.5-8.5V6L12 3z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.8"
-          d="m9.5 12 1.8 1.8 3.2-3.2"
-        />
-      </svg>
-    ),
+    icon: '/SecurityIcon.png',
+    // (
+    //   <svg className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       strokeWidth="1.8"
+    //       d="M12 3 4.5 6v6.5c0 4.2 3 8 7.5 8.5 4.5-.5 7.5-4.3 7.5-8.5V6L12 3z"
+    //     />
+    //     <path
+    //       strokeLinecap="round"
+    //       strokeLinejoin="round"
+    //       strokeWidth="1.8"
+    //       d="m9.5 12 1.8 1.8 3.2-3.2"
+    //     />
+    //   </svg>
+    // ),
   },
 ]
 
@@ -86,7 +89,7 @@ function FeatureCard({ item }) {
       className={`group rounded-xl p-8 text-center shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl ${toneClass}`}
     >
       <div className="mb-4 flex justify-center opacity-90 transition group-hover:scale-110 group-hover:opacity-100">
-        {item.icon}
+        <img src={item.icon} alt={item.title} />
       </div>
       <h3 className="mb-4 text-4xl font-bold">{item.title}</h3>
       <p className="mx-auto max-w-[260px] text-2xl leading-relaxed opacity-95">
