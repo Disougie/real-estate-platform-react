@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import PropertyBackground from '../../assets/PropertyBackground.png'
-import LogoPic from '../../assets/LogoPic.png'
+// import PropertyBackground from '../../assets/PropertyBackground.png'
+// import LogoPic from '../../assets/LogoPic.png'
 
 // const heroBackground = '../assets/PropertyBackground.png';
 const featureCards = [
@@ -70,7 +70,7 @@ const featureCards = [
 function BrandLogoPic() {
   return (
     <div className="h-22 w-24 rounded-full border-gray-200  p-1">
-      <img src={LogoPic} alt="logoPic" className="w-[65px] h-[65px]" />
+      <img src='/LogoPic.png' alt="logoPic" className="w-[65px] h-[65px]" />
     </div>
   )
 }
@@ -102,7 +102,7 @@ export default function LandingPage() {
       <section
         className="relative flex min-h-[100vh] items-center justify-center overflow-hidden px-4"
         style={{
-          backgroundImage: `url(${PropertyBackground})`,
+          backgroundImage: `url(/PropertyBackground.png)`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

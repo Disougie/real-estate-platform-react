@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Menu, Map, FileText, Bell, Newspaper } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SettingsPanel from './SettingsPanel'
-import LogoPic from '../../assets/LogoPic.png'
+// import LogoPic from '../../assets/LogoPic.png'
 
 
 export default function Header({ activeNav }) {
@@ -71,7 +71,7 @@ export default function Header({ activeNav }) {
             {/* LogoPic */}
             <div className="flex items-center gap-4">
               <Link to={role == 'user' ? "/home" : role == 'admin' ? "/admin" : "/lawyer"}>
-                <img src={LogoPic} alt="LogoPic" className="w-[65px] h-[65px]" />
+                <img src='/LogoPic.png' alt="LogoPic" className="w-[65px] h-[65px]" />
               </Link>
             </div>
           </div>
