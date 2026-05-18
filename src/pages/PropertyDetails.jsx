@@ -45,7 +45,7 @@ function PropertyDetails() {
     const urls = property?.imagesUrls || []
     if (urls.length) return urls
     return [
-      '../assets/property default image.PNG',
+      '/PropertyDefaultImage.png',
     ]
   }, [property])
 

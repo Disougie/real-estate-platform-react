@@ -120,7 +120,7 @@ export default function SavedPropertiesPage() {
       location: `${p.city || ''}${p.area ? `, ${p.area}` : ''}`,
       image:
         (p.imagesUrls && p.imagesUrls[0]) ||
-        '../assets/property default image.PNG',
+        '/PropertyDefaultImage.png',
     }))
   }, [saved])
 

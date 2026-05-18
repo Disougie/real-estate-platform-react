@@ -66,7 +66,7 @@ export default function MyPropertiesPage() {
       location: `${p.location?.city || ''}${p.location?.area ? `, ${p.location.area}` : ''}`,
       image:
         (p.images && p.images[0]?.imageUrl) ||
-        '../assets/property default image.PNG',
+        '/PropertyDefaultImage.png',
     }))
   }, [raw])
 
