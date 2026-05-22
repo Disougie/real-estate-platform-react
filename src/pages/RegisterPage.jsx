@@ -4,8 +4,10 @@ import toast from 'react-hot-toast'
 import { apis } from '../api'
 import Logo from '../../assets/LogoPic.png'
 import Swal from 'sweetalert2'
+import PrivacyPolicyCheckbox from './PrivacyPolicyCheckbox'
 
 export default function RegisterPage() {
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
@@ -18,6 +20,10 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if(!isPolicyAccepted) {
+      toast.error('يجب الموافقة على سياسة الخصوصية وشروط الاستخدام')
+      return
+    }
     if (formData.password !== formData.confirmPassword) {
       toast.error('كلمة السر غير متطابقة')
       return
@@ -134,12 +140,16 @@ export default function RegisterPage() {
           />
         </div>
 
+        {/* Privacy Policy Checkbox */}
+        <PrivacyPolicyCheckbox isChecked={isPolicyAccepted} setIsChecked={setIsPolicyAccepted} />
+
         <p className='text-red'>{error}</p>
 
         {/* Submit Button */}
         <div className="flex justify-center pt-4">
           <button
             type="submit"
+            disabled={!isPolicyAccepted}
             className="bg-gray-200 text-primary font-bold px-12 py-3 hover:bg-gray-300 transition-colors"
           >
             تسجيل
