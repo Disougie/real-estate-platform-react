@@ -87,7 +87,7 @@ export default function ContractDetailsPage() {
       if(res.status == 200 || res.status == 201) {
         await Swal.fire({
           title: 'نجاح!',
-          text: 'تم إنشاء العقد بنجاح',
+          text: 'تم طلب الحجز بنجاح',
           icon: 'success',
           confirmButtonColor: '#1e3a8a'
         });

@@ -116,7 +116,7 @@ export default function LawyerContractDetailsPage() {
               className="rounded-lg bg-primary px-10 py-3 text-lg font-bold text-white transition hover:bg-primary/90"
               disabled={contract.status !== 'PENDING_PROCESSING'}
             >
-              قبول العقد
+              قبول الحجز
             </button>
             <button
               type="button"

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { apis } from '../../api'
 import { Search } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 const TABS = [
   { key: 'users', label: 'المستخدمين' },
@@ -205,11 +206,11 @@ function AddModal({ open, onClose, onAdd }) {
 
 function Field({ label, children }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1">{children}</div>
+    <div className="flex items-center gap-3" dir='rtl'>
       <label className="min-w-[130px] text-right font-bold text-gray-800">
         {label}:
       </label>
+      <div className="flex-1">{children}</div>
     </div>
   )
 }
@@ -323,6 +324,7 @@ export default function AdminDashboardHomePage() {
   const handleAdd = async (mode, form) => {
     if (mode === 'blog') {
       return await apis.admin.addBlog({ title: form.title, content: form.content}).then(() => {
+        toast.success('تمت إضافة المقال بنجاح')
         setActiveTab('blogs')
         setQuery('')
         setPage(0)
@@ -347,6 +349,7 @@ export default function AdminDashboardHomePage() {
 
     return call.then(() => {
       const nextTab = mode === 'user' ? 'users' : mode === 'lawyer' ? 'lawyers' : 'admins'
+      toast.success('تمت الإضافة بنجاح')
       setActiveTab(nextTab)
       setQuery('')
       setPage(0)

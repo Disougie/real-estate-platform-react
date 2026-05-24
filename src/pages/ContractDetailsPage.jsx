@@ -62,15 +62,18 @@ export default function ContractDetailsPage() {
 
   const handleConfirm = async () => {
     try {
+
+      console.log(new Date(contract?.expire_at) - new Date())
+
       const res = await apis.contracts.acceptContract(Number(id));
       if(res.status == 204 || res.status == 200) {
-        toast.success('تم تأكيد العقد بنجاح')
+        toast.success('تم تأكيد الحجز بنجاح')
         navigate('/contracts')
       } else {
-        toast.error('حدث خطأ أثناء تأكيد العقد')
+        toast.error('حدث خطأ أثناء تأكيد الحجز')
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'حدث خطأ أثناء تأكيد العقد')
+      toast.error(err.response?.data?.message || 'حدث خطأ أثناء تأكيد الحجز')
     }
   }
   
@@ -90,13 +93,13 @@ export default function ContractDetailsPage() {
       try {
         const res = await apis.contracts.rejectContract(Number(id));
         if(res.status == 204 || res.status == 200) {
-          toast.success('تم الغاء العقد بنجاح')
+          toast.success('تم الغاء الحجز بنجاح')
           navigate('/contracts')
         } else {
-          toast.error('حدث خطأ أثناء إلغاء العقد')
+          toast.error('حدث خطأ أثناء إلغاء الحجز')
         }
       } catch (err) {
-        toast.error(err.response?.data?.message || 'حدث خطأ أثناء إلغاء العقد')
+        toast.error(err.response?.data?.message || 'حدث خطأ أثناء إلغاء الحجز')
       }
     }
   }
@@ -133,8 +136,8 @@ export default function ContractDetailsPage() {
               />
               <FieldRow
                 fields={[
-                  { label: 'تاريخ الانشاء:', value: contract.created_at ? new Date(contract.created_at).toLocaleDateString('ar') : '—' },
-                  { label: 'تاريخ الانتهاء:', value: contract.expire_at ? new Date(contract.expire_at).toLocaleDateString('ar') : '—' },
+                  { label: 'تاريخ الانشاء:', value: contract.created_at ? new Date(contract.created_at).toLocaleTimeString('ar') + ' - ' + new Date(contract.created_at).toLocaleDateString('ar') : '—' },
+                  { label: 'تاريخ الانتهاء:', value: contract.expire_at ? new Date(contract.expire_at).toLocaleTimeString('ar') + ' - ' + new Date(contract.expire_at).toLocaleDateString('ar') : '—' },
                 ]}
               />
             </div>
@@ -142,17 +145,11 @@ export default function ContractDetailsPage() {
 
           {/* Lesser Data Section */}
           <div className="mb-1">
-            <SectionHeader titleAr="بيانات المؤجر" titleEn="LESSER DATA" />
+            <SectionHeader titleAr="المالك" titleEn="LESSER DATA" />
             <div className="bg-white">
               <FieldRow
                 fields={[
                   { label: 'الاسم:', value: contract.owner_data?.name },
-                  { label: 'البريد الالكتروني:', value: contract.owner_data?.email },
-                ]}
-              />
-              <FieldRow
-                fields={[
-                  { label: 'رقم الجوال:', value: contract.owner_data?.phone },
                   { label: '—', value: '' },
                 ]}
               />
@@ -161,17 +158,11 @@ export default function ContractDetailsPage() {
 
           {/* Tenant Data Section */}
           <div className="mb-1">
-            <SectionHeader titleAr="بيانات المستأجر" titleEn="TENANT DATA" />
+            <SectionHeader titleAr="العميل" titleEn="TENANT DATA" />
             <div className="bg-white">
               <FieldRow
                 fields={[
                   { label: 'الاسم:', value: contract.seeker_data?.name },
-                  { label: 'البريد الالكتروني:', value: contract.seeker_data?.email },
-                ]}
-              />
-              <FieldRow
-                fields={[
-                  { label: 'رقم الجوال:', value: contract.seeker_data?.phone },
                   { label: '—', value: '' },
                 ]}
               />
@@ -219,7 +210,7 @@ export default function ContractDetailsPage() {
         {/* Action Buttons */}
         {(new Date(contract.expire_at) - new Date()) > 0 && (contract.status == 'PENDING_APPROVAL' || contract.status == 'PENDING_PROCESSING') && (
           <div className="flex justify-center gap-4 mt-8">
-            {contract.owner_data?.email.trim().substring(1) == localStorage.getItem('email').trim() && (
+            {(contract.owner_data?.email.trim().substring(1) == localStorage.getItem('email').trim() || contract.owner_data?.email.trim() == localStorage.getItem('email').trim() ) && (
               <button
               onClick={handleConfirm}
               className="px-12 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors text-lg"

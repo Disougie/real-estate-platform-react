@@ -75,6 +75,11 @@ function HomePage() {
   }, [page, size, mode])
 
   const handleTextSearch = () => {
+    if(searchText.trim() === '') {
+      setMode('DEFAULT');
+      setPage(0);
+      return;
+    }
     if(mode === 'TEXT_SEARCH') {
       fetchData();
       return;

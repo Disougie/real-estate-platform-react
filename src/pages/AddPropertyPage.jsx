@@ -136,7 +136,7 @@ export default function AddPropertyPage() {
           onSubmit={handleSubmit}
           className="mx-auto max-w-5xl rounded-xl bg-primary px-6 py-8 md:px-10"
         >
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3" dir='rtl'>
             <Field label="نوع العقار">
               <select
                 value={formData.type}
@@ -244,8 +244,6 @@ export default function AddPropertyPage() {
                 required
               />
             </Field>
-          </div>
-
           <Field label="عنوان الاعلان">
             <input
               type="text"
@@ -264,6 +262,8 @@ export default function AddPropertyPage() {
               required
             ></textarea>
           </Field>
+          </div>
+
 
           {isMapOpen && (
             <div className="mt-6 rounded-lg bg-white p-4">
@@ -353,10 +353,10 @@ export default function AddPropertyPage() {
 function Field({ label, children }) {
   return (
     <div className="flex items-center gap-3">
-      {children}
       <label className="min-w-[120px] text-right text-xl font-bold text-white">
-        :{label}
+        {label}:
       </label>
+      {children}
     </div>
   )
 }

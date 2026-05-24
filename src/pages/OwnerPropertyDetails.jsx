@@ -4,7 +4,6 @@ import { apis } from '../api';
 import toast from 'react-hot-toast';
 import { X, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Header from '../components/Header';
-import axios from 'axios';
 import { http } from '../api/http';
 
 export default function OwnerPropertyDetails() {
@@ -85,7 +84,6 @@ export default function OwnerPropertyDetails() {
       newImages.forEach((file) => {
         formData.append('images', file);
       });
-      // const res = await apis.properties.changePropertyAd(id, formData,);
 
       const res = await http.patch(
         `/api/v1/properties/${id}`,

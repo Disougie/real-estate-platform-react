@@ -4,33 +4,50 @@ import Header from '../components/Header'
 import { apis } from '../api'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-import { http } from '../api/http'
 
 export default function AccountSettingsPage() {
   const navigate = useNavigate()
-  const [phone, setPhone] = useState('');
+  // const [phone, setPhone] = useState('');
+  const role = localStorage.getItem('role')
 
-  useEffect(() => {
-    if (localStorage.getItem('role') != 'user') {
-      return;
-    }
-    apis.users.getUser(
-      Number(localStorage.getItem('id'))
-    ).then(res => console.log(res))
-      .then(res => setPhone(res.data?.phone || ''));
-    // http.get(`/api/v1/users/${localStorage.getItem('id')}`)
-    //   .then(res => console.log(res))
+  // useEffect(() => {
+  //   if (role != 'user' || role.substring(1) != 'user') {
+  //     return;
+  //   }
+  //   apis.users.getUser(
+  //     Number(localStorage.getItem('id'))
+  //   ).then(res => {setPhone(res?.data?.phone || ''); console.log(res)})
+  //   // http.get(`/api/v1/users/${localStorage.getItem('id')}`)
+  //   //   .then(res => console.log(res))
 
-  }, []);
+  // }, []);
 
   const userInfo = {
     name: localStorage.getItem('name') || "",
     email: localStorage.getItem('email') || "",
-    phone: phone || "",
+    phone: localStorage.getItem('phone') || "",
     password: '*******',
   }
 
-  const settingsItems = [
+  // const settingsItems = [
+  //   {
+  //     label: 'البريد الالكتروني',
+  //     value: userInfo.email,
+  //     action: () => navigate('/edit-email')
+  //   },
+  //   {
+  //     label: 'رقم الهاتف',
+  //     value: userInfo.phone,
+  //     action: () => navigate('/edit-phone')
+  //   },
+  //   {
+  //     label: 'كلمة السر',
+  //     value: userInfo.password,
+  //     action: () => navigate('/edit-password')
+  //   }
+  // ] 
+
+  const settingsItems = (role == 'user' || role.substring(1) == 'user') ? [
     {
       label: 'البريد الالكتروني',
       value: userInfo.email,
@@ -46,7 +63,18 @@ export default function AccountSettingsPage() {
       value: userInfo.password,
       action: () => navigate('/edit-password')
     }
-  ]
+  ] : [
+    {
+      label: 'البريد الالكتروني',
+      value: userInfo.email,
+      action: () => navigate('/edit-email')
+    },
+    {
+      label: 'كلمة السر',
+      value: userInfo.password,
+      action: () => navigate('/edit-password')
+    }
+  ];
 
   const handleAccountDeletion = async () => {
     // Step 1: Warning Confirmation Modal

@@ -67,7 +67,7 @@ export default function ErrorPage() {
             <div className="flex flex-wrap justify-start gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => window.location.reload()}
+                onClick={() => navigate(-1)}
                 className="rounded-lg bg-primary px-8 py-3 font-bold text-white transition hover:bg-primary/90"
               >
                 إعادة المحاولة

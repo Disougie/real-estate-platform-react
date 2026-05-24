@@ -29,6 +29,7 @@ export default function LoginPage() {
         localStorage.setItem('name', res.data.name);
         localStorage.setItem('email', formData.email.trim());
         localStorage.setItem('id', res.data.id);
+        localStorage.setItem('phone', res.data.phone);
       }
 
       const roleRaw = res.data?.role || ''

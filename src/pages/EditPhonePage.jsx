@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apis } from '../api'
 import Logo from '../../assets/LogoPic.png'
+import toast from 'react-hot-toast'
 
 export default function EditPhonePage() {
   const navigate = useNavigate()
@@ -12,10 +13,13 @@ export default function EditPhonePage() {
     e.preventDefault()
     const res = await apis.changeInfo.changePhone({ phone , password});
     if(res.status == 204){
+      toast.success('تم تحديث رقم الهاتف بنجاح')
+      localStorage.setItem('phone', phone);
       navigate('/account-settings');
     }
     else {
-      throw new Error("something went wrong");
+      toast.error('حدث خطأ ما')
+      navigate('/account-settings');
     }
   }
 
