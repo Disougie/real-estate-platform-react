@@ -64,7 +64,10 @@ export default function LawyerContractDetailsPage() {
           confirmButtonColor: '#1e3a8a'
         });
         navigate('/lawyer/my-contracts')
-      } else {
+      } else if(res.status === 400) {
+        toast.error(res.data?.message || 'لا يمكن قبول الحجز. الرجاء المحاولة لاحقًا.')
+      }
+      else {
         toast.error('حدث خطأ أثناء قبول الحجز. الرجاء المحاولة لاحقًا.')
       }
     } catch (err) {

@@ -6,6 +6,8 @@ import Header from '../components/Header'
 import toast from 'react-hot-toast'
 import Swal from 'sweetalert2'
 import { apis } from '../api'
+import { http } from '../api/http'
+import { useNavigate } from 'react-router-dom'
 
 const propertyTypes = [
   { label: 'سكني', value: 'سكني' },
@@ -47,6 +49,7 @@ export default function AddPropertyPage() {
   const [formData, setFormData] = useState(initialForm)
   const [images, setImages] = useState([])
   const [isMapOpen, setIsMapOpen] = useState(false)
+  const navegate = useNavigate();
 
   const previewUrls = useMemo(
     () => images.map((image) => URL.createObjectURL(image)),
@@ -65,7 +68,7 @@ export default function AddPropertyPage() {
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files || [])
-    setImages(files.slice(0, 6))
+    setImages(files.slice(0, 5))
   }
 
   const handleSubmit = async (event) => {
@@ -96,7 +99,7 @@ export default function AddPropertyPage() {
       description: formData.description,
       rooms: Number(formData.rooms || 0),
       baths: Number(formData.bathrooms || 0),
-      images,
+      // images,
       city: formData.city,
       area: formData.area,
       size: Number(formData.size || 0),
@@ -104,6 +107,11 @@ export default function AddPropertyPage() {
 
     try {
       const res = await apis.properties.addPropertyAd({ ...payload })
+      // const res = await http.post('/api/v1/properties', payload, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // })
       if (res.status == 201 || res.status == 200) {
         Swal.fire({
           title: 'نجاح!',
@@ -111,6 +119,7 @@ export default function AddPropertyPage() {
           icon: 'success',
           confirmButtonColor: '#1e3a8a'
         })
+        navegate('/my-properties');
       }
       else {
         throw new Error("something went wrong")
@@ -308,7 +317,7 @@ export default function AddPropertyPage() {
             </div>
           )}
 
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <label className="mb-3 block text-right text-2xl font-bold text-white">
               صور العقار
             </label>
@@ -334,7 +343,7 @@ export default function AddPropertyPage() {
                 />
               </label>
             </div>
-          </div>
+          </div> */}
 
           <div className="mt-10 flex justify-center">
             <button

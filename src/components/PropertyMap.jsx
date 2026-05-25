@@ -137,6 +137,7 @@ export default function PropertyMap({ filters = {} }) {
 
   useEffect(() => {
     // Initial Geolocation
+    const start = new Date().getMilliseconds();
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -163,6 +164,8 @@ export default function PropertyMap({ filters = {} }) {
       setSearchCenter([fallbackLat, fallbackLng]);
       fetchProperties(fallbackLat, fallbackLng);
     }
+    const end = new Date().getMilliseconds();
+    console.log(`fetch duration = ${end - start}ms`);
   }, [fetchProperties]);
 
   const handleLocationSelected = (lat, lng) => {

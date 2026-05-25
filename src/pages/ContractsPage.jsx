@@ -60,7 +60,7 @@ export default function ContractsPage() {
                         الحجز رقم: {contract.contractNumber}
                       </h3>
                       <p className="text-lg">المالك : {contract.owner}</p>
-                      <p className="text-lg">المشتري : {contract.buyer}</p>
+                      <p className="text-lg">العميل : {contract.buyer}</p>
                     </div>
 
                     {/* Left side - Date */}

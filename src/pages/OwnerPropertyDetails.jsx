@@ -48,7 +48,7 @@ export default function OwnerPropertyDetails() {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
+      const filesArray = Array.from(e.target.files).slice(0, 5); // Limit to 5 images
       setNewImages((prev) => [...prev, ...filesArray]);
     }
     // Reset the input value so the same file can be selected again if needed

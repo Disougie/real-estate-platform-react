@@ -13,6 +13,7 @@ function PropertyDetails() {
   const navigation = useNavigate();
 
   useEffect(() => {
+    const start = new Date().getMilliseconds();
     let alive = true
     setLoading(true)
     apis.properties
@@ -24,6 +25,8 @@ function PropertyDetails() {
       .finally(() => {
         if (alive) setLoading(false)
       })
+    const end = new Date().getMilliseconds();
+    console.log(`fetch duration = ${end - start}ms`);
 
     return () => {
       alive = false
