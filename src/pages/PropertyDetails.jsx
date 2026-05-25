@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Header from '../components/Header'
 import { apis } from '../api'
@@ -12,26 +12,47 @@ function PropertyDetails() {
   const [property, setProperty] = useState(null)
   const navigation = useNavigate();
 
+  const startTimeRef = useRef(0);
+  const apiTimeRef = useRef(0);
+  const isDataTrackingActiveRef = useRef(false);
+
   useEffect(() => {
-    const start = new Date().getMilliseconds();
+    startTimeRef.current = performance.now();
+    isDataTrackingActiveRef.current = true;
     let alive = true
     setLoading(true)
     apis.properties
       .getProperty(String(id))
       .then((res) => {
         if (!alive) return
+        apiTimeRef.current = performance.now();
         setProperty(res.data)
       })
       .finally(() => {
         if (alive) setLoading(false)
       })
-    const end = new Date().getMilliseconds();
-    console.log(`fetch duration = ${end - start}ms`);
 
     return () => {
       alive = false
     }
   }, [id])
+
+  useLayoutEffect(() => {
+    if (property && isDataTrackingActiveRef.current) {
+      const finalRenderTime = performance.now();
+      const backendNetworkLatency = apiTimeRef.current - startTimeRef.current;
+      const uiRenderPaintDuration = finalRenderTime - apiTimeRef.current;
+      const totalEndToEndLatency = finalRenderTime - startTimeRef.current;
+
+      console.log('%c--- End-to-End Performance Metrics ---', 'color: #007bff; font-weight: bold; font-size: 14px;');
+      console.log(`%cBackend + Network Latency: ${backendNetworkLatency.toFixed(2)}ms`, 'color: #28a745; font-weight: bold;');
+      console.log(`%cUI Rendering & Paint Duration: ${uiRenderPaintDuration.toFixed(2)}ms`, 'color: #fd7e14; font-weight: bold;');
+      console.log(`%cTotal End-to-End Latency: ${totalEndToEndLatency.toFixed(2)}ms`, 'color: #dc3545; font-weight: bold;');
+      console.log('%c--------------------------------------', 'color: #007bff; font-weight: bold;');
+
+      isDataTrackingActiveRef.current = false;
+    }
+  }, [property])
 
   useEffect(() => {
     apis.savedProperties.getMySavedProperties().then(res => {
