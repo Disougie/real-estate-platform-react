@@ -2,13 +2,20 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import PropertyTabs from '../components/PropertyTabs'
 
-const areas = ['اختر المنطقة', 'الدناقلة', 'المزاد', 'الصافية', 'الشعبية']
+const areas = ['اختر المنطقة', 'الدناقلة', 'المزاد', 'الصافية', 'الشعبية', 'كافوري', 'الحاج يوسف']
 const cities = ['اختر المدينة', 'الخرطوم', 'بحري', 'ام درمان']
+const cityToArea = {
+  'الخرطوم': ['اختر المنطقة', 'الرياض', 'الطائف', 'اركويت', 'العمارات', 'السوق العربي', 'الصحافة', 'الخرطوم 2'],
+  'بحري': ['اختر المنطقة', 'الدناقلة', 'المزاد', 'الصافية', 'الشعبية', 'كافوري', 'الحاج يوسف'],
+  'ام درمان': ['اختر المنطقة', 'الموردة', 'بيت المال', 'امبدة', 'الثورة', 'صالحة', 'العرضة'],
+  '': ['اختر المنطقة', 'الموردة', 'بيت المال', 'الرياض', 'الطائف', 'الصافية', 'الشعبية', 'كافوري'],
+}
 
 export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
   const [activeTab, setActiveTab] = useState()
   const [areaOpen, setareaOpen] = useState(false)
   const [cityOpen, setCityOpen] = useState(false)
+  const [selectedCity, setSelectedCity] = useState('')
 
   const handleTypeChange = (type) => {
     setActiveTab(type);
@@ -68,7 +75,7 @@ export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
         <span className="text-gray-700 font-medium">خيارات البحث</span>
         <button 
           className="px-4 py-2 border border-gray-400 rounded text-gray-700 hover:bg-gray-200 transition-colors"
-          onClick={() => {setActiveTab(null); onReset()}}
+          onClick={() => {setActiveTab(null); setSelectedCity(''); onReset()}}
         >
           إعادة ضبط
         </button>
@@ -93,6 +100,7 @@ export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
                   <button
                     key={index}
                     onClick={() => {
+                      setSelectedCity(city)
                       setFilters(prev => ({ ...prev, city }))
                       setCityOpen(false)
                     }}
@@ -121,7 +129,7 @@ export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
             </button>
             {areaOpen && (
               <div className="absolute top-full right-0 left-0 bg-white border border-gray-300 rounded mt-1 z-10 shadow-lg">
-                {areas.map((area, index) => (
+                {cityToArea[selectedCity].map((area, index) => (
                   <button
                     key={index}
                     onClick={() => {

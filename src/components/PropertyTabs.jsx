@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const tabs = [
   { id: 'PURCHASE', label: 'شراء سكني' },
-  { id: 'RENT', label: 'تأجير سكني' },
+  { id: 'RENT', label: 'إيجار سكني' },
   { id: 'COMMERCIAL_PURCHASE', label: 'شراء تجاري' },
   { id: 'COMMERCIAL_RENT', label: 'ايجار تجاري' },
   // { id: 'STUDENT', label: 'السكن الطلابي' },

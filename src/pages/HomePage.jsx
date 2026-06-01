@@ -146,7 +146,7 @@ function HomePage() {
               </button>
             </div>
             <button className='bg-primary text-white p-4' onClick={handleRecommendation}>
-              الافتراحات
+              الاقتراحات
             </button>
           </div>
 
