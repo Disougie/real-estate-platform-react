@@ -100,6 +100,8 @@ export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
                   <button
                     key={index}
                     onClick={() => {
+                      if(city == 'اختر المدينة')
+                        return
                       setSelectedCity(city)
                       setFilters(prev => ({ ...prev, city }))
                       setCityOpen(false)
@@ -129,10 +131,12 @@ export default function Sidebar({ filters, setFilters, onSearch, onReset }) {
             </button>
             {areaOpen && (
               <div className="absolute top-full right-0 left-0 bg-white border border-gray-300 rounded mt-1 z-10 shadow-lg">
-                {cityToArea[selectedCity].map((area, index) => (
+                {cityToArea[selectedCity]?.map((area, index) => (
                   <button
                     key={index}
                     onClick={() => {
+                      if(area == 'اختر المنطقة') 
+                        return
                       setFilters(prev => ({ ...prev, area }))
                       setareaOpen(false)
                     }}
