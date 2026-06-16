@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { apis } from '../../api'
+import Swal from 'sweetalert2'
 
 function StatusPill({ status }) {
   const normalized = String(status || '').toUpperCase()
@@ -46,7 +47,6 @@ export default function MyContractsPage() {
 
   useEffect(() => {
     refresh()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const acceptedContracts = useMemo(() => {
@@ -65,20 +65,64 @@ export default function MyContractsPage() {
     }))
   }, [raw])
 
-  const handleBlock = async (id) => {
-    if (!reason.trim()) {
-      toast.error('يرجى كتابة سبب البلاغ')
-      return
+  const handleComplete = async(id) => {
+    const confirmDecision = await Swal.fire({
+          title: 'هل أنت متأكد من إتمام العملية؟',
+          text: 'هذا الإجراء سيقوم باكمال العمل على الخحز المبدئي وتحويله كعقد نهائي!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#1e3a5f',
+          cancelButtonColor: '#6b7280',
+          confirmButtonText: 'نعم، أنا متأكد',
+          cancelButtonText: 'إلغاء'
+    });
+
+    if(!confirmDecision.isConfirmed){
+      return;
     }
-    try {
-      await apis.lawyer.banContract(Number(id))
-      setBlockingId(null)
-      setReason('')
-      toast.success('تم إرسال البلاغ')
-      refresh()
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'حدث خطأ أثناء إرسال البلاغ')
+
+    apis.lawyer.completeContract(Number(id))
+      .then(() => refresh())
+  }
+
+  const handleBan = async(id) => {
+    const confirmDecision = await Swal.fire({
+          title: 'هل أنت متأكد من حظر هذه العملية؟',
+          text: 'هذا الإجراء سيقوم بحظر هذا الخحز المبدئي وبالتالي خذف العقار',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#ef4444',
+          cancelButtonColor: '#6b7280',
+          confirmButtonText: 'نعم، أنا متأكد',
+          cancelButtonText: 'إلغاء'
+    });
+
+    if(!confirmDecision.isConfirmed){
+      return;
     }
+
+    apis.lawyer.banContract(Number(id))
+      .then(() => refresh())
+  }
+
+  const handleCancel = async(id) => {
+    const confirmDecision = await Swal.fire({
+          title: 'هل أنت متأكد من إلغاء هذه العملية؟',
+          text: 'هذا الإجراء سيقوم بإلغاء العمل على الخحز المبدئي وامكانية قبوله من محاميين اخرين!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#1e3a5f',
+          cancelButtonColor: '#6b7280',
+          confirmButtonText: 'نعم، أنا متأكد',
+          cancelButtonText: 'إلغاء'
+    });
+
+    if(!confirmDecision.isConfirmed){
+      return;
+    }
+
+    apis.lawyer.cancelContract(Number(id))
+      .then(() => refresh())
   }
 
   return (
@@ -129,23 +173,21 @@ export default function MyContractsPage() {
               <div className="mt-5 flex flex-wrap justify-start gap-3">
                 <button
                   type="button"
-                  onClick={() => apis.lawyer.completeContract(Number(c.id)).then(() => refresh())}
+                  onClick={() => handleComplete(c.id)}
                   className="rounded-lg bg-green-600 px-6 py-2 font-bold text-white transition hover:bg-green-700"
                 >
                   إتمام / تأكيد
                 </button>
                 <button
                   type="button"
-                  onClick={() => setBlockingId(c.id)}
+                  onClick={() => handleBan(c.id)}
                   className="rounded-lg bg-red-600 px-6 py-2 font-bold text-white transition hover:bg-red-700"
                 >
                   بلاغ / حظر
                 </button>
                 <button
                   type="button"
-                  onClick={() =>
-                    apis.lawyer.cancelContract(Number(c.id)).then(() => refresh())
-                  }
+                  onClick={() => handleCancel(c.id)}
                   className="rounded-lg border-2 border-primary bg-white px-6 py-2 font-bold text-primary transition hover:bg-primary/5"
                 >
                   إلغاء

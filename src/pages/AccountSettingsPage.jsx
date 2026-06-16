@@ -7,20 +7,7 @@ import Swal from 'sweetalert2'
 
 export default function AccountSettingsPage() {
   const navigate = useNavigate()
-  // const [phone, setPhone] = useState('');
   const role = localStorage.getItem('role')
-
-  // useEffect(() => {
-  //   if (role != 'user' || role.substring(1) != 'user') {
-  //     return;
-  //   }
-  //   apis.users.getUser(
-  //     Number(localStorage.getItem('id'))
-  //   ).then(res => {setPhone(res?.data?.phone || ''); console.log(res)})
-  //   // http.get(`/api/v1/users/${localStorage.getItem('id')}`)
-  //   //   .then(res => console.log(res))
-
-  // }, []);
 
   const userInfo = {
     name: localStorage.getItem('name') || "",
@@ -28,24 +15,6 @@ export default function AccountSettingsPage() {
     phone: localStorage.getItem('phone') || "",
     password: '*******',
   }
-
-  // const settingsItems = [
-  //   {
-  //     label: 'البريد الالكتروني',
-  //     value: userInfo.email,
-  //     action: () => navigate('/edit-email')
-  //   },
-  //   {
-  //     label: 'رقم الهاتف',
-  //     value: userInfo.phone,
-  //     action: () => navigate('/edit-phone')
-  //   },
-  //   {
-  //     label: 'كلمة السر',
-  //     value: userInfo.password,
-  //     action: () => navigate('/edit-password')
-  //   }
-  // ] 
 
   const settingsItems = (role == 'user' || role.substring(1) == 'user') ? [
     {
